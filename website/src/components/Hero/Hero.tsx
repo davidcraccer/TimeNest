@@ -1,0 +1,3 @@
+import './Hero.css';
+
+export {};

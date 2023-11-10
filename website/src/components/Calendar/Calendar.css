@@ -1,45 +1,64 @@
+.calendar-container {
+  background-color: #f5f5f5;
+  border-radius: 3.5px;
+}
+
 .calendar-header-btn {
-    appearance: button;
-    box-sizing: border-box;
-    font-family: Muli, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    text-align: center;
-    height: 34.1875px;
-    color: rgb(255, 255, 255);
-    padding: 5.6px 9.1px;
-    border: 1px solid rgb(21, 30, 39);
-  }
-  
-  .arrow-left,
-  .arrow-right {
-    width: 41.1875px;
-    background-color: rgb(15, 11, 56);
-  }
-  
-  .left-btn {
-    border-radius: 3.5px 0 0 3.5px;
-  }
-  
-  .right-btn {
-    border-radius: 0 3.5px 3.5px 0;
-  }
-  
-  .today-btn {
-    width: 57.34375px;
-    background-color: rgb(44, 62, 80);
-    border-radius: 3.5px;
-  }
-  
-  .month-btn {
-    width: 61.796875px;
-    background-color: rgb(15, 11, 56);
-  }
-  
-  .week-btn,
-  .day-btn,
-  .list-btn {
-    width: 54.71875px;
-    background-color: rgb(15, 11, 56);
-  }
-  
+  appearance: button;
+  box-sizing: border-box;
+  font-family: Muli, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  height: 34.1875px;
+  color: rgb(255, 255, 255);
+  padding: 5.6px 9.1px;
+  border: 1px solid rgb(21, 30, 39);
+}
+
+.arrow-left,
+.arrow-right {
+  width: 41.1875px;
+  background-color: rgb(15, 11, 56);
+}
+
+.left-btn {
+  border-radius: 3.5px 0 0 3.5px;
+}
+
+.right-btn {
+  border-radius: 0 3.5px 3.5px 0;
+}
+
+.today-btn {
+  width: 57.34375px;
+  background-color: rgb(44, 62, 80);
+  border-radius: 3.5px;
+}
+
+.month-btn {
+  width: 61.796875px;
+  background-color: rgb(15, 11, 56);
+}
+
+.week-btn,
+.day-btn,
+.list-btn {
+  width: 54.71875px;
+  background-color: rgb(15, 11, 56);
+}
+
+table{
+  width: 100%;
+}
+
+td {
+  color: rgb(32, 35, 42);
+}
+
+
+th, td {
+  padding: 5px;
+  border: 1px solid rgb(221, 221, 221);
+  width: 14.2857%;
+}

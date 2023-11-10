@@ -28,7 +28,7 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div className="container mt-5 text-center">
+    <div className="calendar-container container mt-5 text-center px-5 py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div className="">
           <button className="calendar-header-btn arrow-left left-btn">
@@ -54,16 +54,16 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <table className="table table-bordered">
+      <table className="table">
         <thead>
           <tr>
-            <th className="table-header">Mon</th>
-            <th className="table-header">Tue</th>
-            <th className="table-header">Wed</th>
-            <th className="table-header">Thu</th>
-            <th className="table-header">Fri</th>
-            <th className="table-header">Sat</th>
-            <th className="table-header">Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
           </tr>
         </thead>
         <tbody>

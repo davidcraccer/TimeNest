@@ -62,3 +62,7 @@ th, td {
   border: 1px solid rgb(221, 221, 221);
   width: 14.2857%;
 }
+
+.empty-day{
+  background-color: grey;
+}

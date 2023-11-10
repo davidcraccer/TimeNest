@@ -1,5 +1,12 @@
 import "./Calendar.css";
 import React from "react";
+import PreviousBtn from "./Buttons/PreviousBtn";
+import NextBtn from "./Buttons/NextBtn";
+import TodayBtn from "./Buttons/TodayBtn";
+import MonthBtn from "./Buttons/MonthBtn";
+import WeekBtn from "./Buttons/WeekBtn";
+import DayBtn from "./Buttons/DayBtn";
+import ListBtn from "./Buttons/ListBtn";
 import { generateCalendarRows } from "../../utils/calendarUtils";
 
 const Home: React.FC = () => {
@@ -31,26 +38,16 @@ const Home: React.FC = () => {
     <div className="calendar-container container mt-5 text-center px-5 py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div className="">
-          <button className="calendar-header-btn arrow-left left-btn">
-            {"<"}
-          </button>
-          <button className="calendar-header-btn arrow-right right-btn">
-            {">"}
-          </button>
-          <button className="calendar-header-btn today-btn ms-3">Today</button>
+          <PreviousBtn />
+          <NextBtn />
+          <TodayBtn />
         </div>
-
         <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>
-
         <div className="">
-          <button className="calendar-header-btn month-btn left-btn">
-            Month
-          </button>
-          <button className="calendar-header-btn week-btn">Week</button>
-          <button className="calendar-header-btn day-btn">Day</button>
-          <button className="calendar-header-btn list-btn right-btn">
-            List
-          </button>
+          <MonthBtn />
+          <WeekBtn />
+          <DayBtn />
+          <ListBtn />
         </div>
       </div>
 
@@ -70,14 +67,7 @@ const Home: React.FC = () => {
           {calendarRows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((day, dayIndex) => (
-                <td
-                  key={dayIndex}
-                  className={`date-square ${
-                    day !== 0 ? "filled-day" : "empty-day"
-                  }`}
-                >
-                  {day !== 0 ? day : ""}
-                </td>
+                <td key={dayIndex}>{day !== 0 ? day : ""}</td>
               ))}
             </tr>
           ))}

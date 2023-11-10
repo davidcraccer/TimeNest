@@ -18,20 +18,20 @@ const Home: React.FC = () => {
   // Generate the calendar rows for the current month and year
   const calendarRows = generateCalendarRows(currentYear, currentMonth);
 
-  // Array of month names for display
+  // Array of German month names for display
   const monthNames = [
-    "January",
-    "February",
-    "March",
+    "Januar",
+    "Februar",
+    "März",
     "April",
-    "May",
-    "June",
-    "July",
+    "Mai",
+    "Juni",
+    "Juli",
     "August",
     "September",
-    "October",
+    "Oktober",
     "November",
-    "December",
+    "Dezember",
   ];
 
   return (
@@ -54,13 +54,13 @@ const Home: React.FC = () => {
       <table className="table">
         <thead>
           <tr>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th>Sat</th>
-            <th>Sun</th>
+            <th>Mo</th>
+            <th>Di</th>
+            <th>Mi</th>
+            <th>Do</th>
+            <th>Fr</th>
+            <th>Sa</th>
+            <th>So</th>
           </tr>
         </thead>
         <tbody>

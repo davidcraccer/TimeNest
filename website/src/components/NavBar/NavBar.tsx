@@ -24,17 +24,22 @@ const NavBar: React.FC = () => {
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <a className="nav-link" href="#de">
-                Calendar
+                Kalender
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#de">
-                Notifcations
+                Benachrichtigung
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#de">
                 Chats
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#de">
+                Profil
               </a>
             </li>
           </ul>

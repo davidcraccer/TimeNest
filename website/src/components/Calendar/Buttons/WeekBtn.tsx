@@ -3,7 +3,7 @@ import React from "react";
 
 const WeekBtn: React.FC = () => {
   return (
-    <button className="calendar-header-btn week-btn">Week</button>
+    <button className="calendar-header-btn week-btn">Woche</button>
   );
 };
 

@@ -3,7 +3,7 @@ import React from "react";
 
 const DayBtn: React.FC = () => {
   return (
-    <button className="calendar-header-btn day-btn">Day</button>
+    <button className="calendar-header-btn day-btn">Tag</button>
   );
 };
 

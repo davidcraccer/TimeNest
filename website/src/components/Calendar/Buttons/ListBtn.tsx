@@ -3,7 +3,7 @@ import React from "react";
 
 const ListBtn: React.FC = () => {
   return (
-    <button className="calendar-header-btn list-btn right-btn">List</button>
+    <button className="calendar-header-btn list-btn right-btn">Liste</button>
   );
 };
 

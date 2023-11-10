@@ -3,7 +3,7 @@ import React from "react";
 
 const TodayBtn: React.FC = () => {
   return (
-    <button className="calendar-header-btn today-btn ms-3">Today</button>
+    <button className="calendar-header-btn today-btn ms-3">Heute</button>
   );
 };
 

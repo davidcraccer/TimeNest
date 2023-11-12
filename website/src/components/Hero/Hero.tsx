@@ -1,3 +1,0 @@
-import './Hero.css';
-
-export {};

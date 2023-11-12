@@ -3,7 +3,7 @@ nav {
 }
 
 .navbar-logo {
-  width: 15vw;
+  width: 15%;
 }
 
 .navbar-toggler {
@@ -36,3 +36,23 @@ nav {
   }
 }
 
+/* Desktop/Laptop Styles */
+@media screen and (min-width: 992px) {
+  .navbar {
+    height: 80px; /* Adjust this value based on your design */
+  }
+}
+
+/* Tablet Styles */
+@media screen and (max-width: 991px) {
+  .navbar {
+    height: 60px; /* Adjust this value based on your design */
+  }
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 767px) {
+  .navbar {
+    height: 50px; /* Adjust this value based on your design */
+  }
+}

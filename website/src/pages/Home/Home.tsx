@@ -4,7 +4,9 @@ import Calendar from "../../components/Calendar/Calendar";
 
 const Home: React.FC = () => {
   return (
-    <Calendar/>
+    <div className="hero">
+      <Calendar />
+    </div>
   );
 };
 

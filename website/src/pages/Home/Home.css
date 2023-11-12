@@ -1,0 +1,20 @@
+/* Common styles for all devices */
+.hero {
+  /* Set the height to 100% of the viewport height minus the navbar height */
+  height: calc(100vh - 80px); /* Adjust this value based on your design */
+  background-color: #f5f5f5;
+}
+
+/* Tablet Styles */
+@media screen and (max-width: 991px) {
+  .hero {
+    height: calc(100vh - 60px); /* Adjust this value based on your design */
+  }
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 767px) {
+  .hero {
+    height: calc(100vh - 50px); /* Adjust this value based on your design */
+  }
+}

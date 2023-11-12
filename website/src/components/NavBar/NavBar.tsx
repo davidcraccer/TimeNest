@@ -4,8 +4,8 @@ export {};
 const NavBar: React.FC = () => {
 
   return (
-    <nav className="navbar navbar-expand-lg">
-      <div className="container navbar-dark">
+    <nav className="navbar-expand-lg">
+      <div className="navbar-dark">
         <a href="/">
           <img className="navbar-brand navbar-logo" src={require('../../images/logo.jpg')} alt="Time Nest Logo"></img>        
         </a>
@@ -14,9 +14,9 @@ const NavBar: React.FC = () => {
           type="button"
           data-toggle="collapse"
           data-target="#navbarNav"
-          // aria-controls="navbarNav"
-          // aria-expanded="false"
-          // aria-label="Toggle navigation"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon my-toggler"></span>
         </button>

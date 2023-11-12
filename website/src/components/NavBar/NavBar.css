@@ -2,6 +2,8 @@ nav {
   background-color: rgb(15, 11, 56);
 }
 
+
+
 .navbar-logo {
   width: 15%;
 }
@@ -24,6 +26,7 @@ nav {
 .nav-link {
   color: rgba(110,192,216);
   font-weight: 400;
+  font-size: 1rem;
 }
 
 .nav-link:hover {
@@ -56,3 +59,27 @@ nav {
     height: 50px; /* Adjust this value based on your design */
   }
 }
+/* fix nav bar on larger screens*/
+
+@media screen and (min-width: 1850px) {
+  .navbar-logo{
+    width: 5vw;
+  }
+
+}  
+
+  .navbar-dark{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 3em;
+    padding: 1em 0;
+  }
+
+  .navbar-nav{
+    display: flex;
+    gap: 1.4em;
+  }
+
+
+
+

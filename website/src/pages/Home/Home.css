@@ -1,6 +1,5 @@
 /* Common styles for all devices */
 .hero {
-    
   height: calc(100vh - 80px);
   background-color: #f5f5f5;
 }

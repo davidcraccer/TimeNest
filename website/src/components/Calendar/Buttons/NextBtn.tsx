@@ -1,9 +1,18 @@
 import "../Calendar.css";
 import React from "react";
 
-const NextBtn: React.FC = () => {
+interface NextBtnProps {
+  onClick: () => void;
+}
+
+const NextBtn: React.FC<NextBtnProps> = ({ onClick }) => {
   return (
-    <button className="calendar-header-btn arrow-right right-btn">{">"}</button>
+    <button
+      className="calendar-header-btn arrow-right right-btn"
+      onClick={onClick}
+    >
+      {">"}
+    </button>
   );
 };
 

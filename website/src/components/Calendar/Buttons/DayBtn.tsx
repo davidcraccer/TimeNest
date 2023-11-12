@@ -1,9 +1,15 @@
 import "../Calendar.css";
 import React from "react";
 
-const DayBtn: React.FC = () => {
+interface DayBtnProps {
+  onClick: () => void;
+}
+
+const DayBtn: React.FC<DayBtnProps> = ({ onClick }) => {
   return (
-    <button className="calendar-header-btn day-btn">Tag</button>
+    <button className="calendar-header-btn day-btn" onClick={onClick}>
+      Tag
+    </button>
   );
 };
 

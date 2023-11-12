@@ -1,9 +1,15 @@
 import "../Calendar.css";
 import React from "react";
 
-const TodayBtn: React.FC = () => {
+interface TodayBtnProps {
+  onClick: () => void;
+}
+
+const TodayBtn: React.FC<TodayBtnProps> = ({ onClick }) => {
   return (
-    <button className="calendar-header-btn today-btn ms-3">Heute</button>
+    <button className="calendar-header-btn today-btn ms-3" onClick={onClick}>
+      Heute
+    </button>
   );
 };
 

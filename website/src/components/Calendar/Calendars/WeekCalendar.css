@@ -1,0 +1,7 @@
+.table-week th,
+.table-week td {
+  padding: 5px;
+  border: 1px solid rgb(221, 221, 221);
+  width: 14.2857%;
+}
+

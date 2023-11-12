@@ -1,0 +1,13 @@
+.table.list-calendar td {
+    text-align: left;
+    position: relative;
+}
+  
+.dot::after{
+    content: "•";
+    color: #6EC0D8;
+    font-size: 50px;
+    position: absolute;
+    top: -20px;
+    left: -20px;
+}

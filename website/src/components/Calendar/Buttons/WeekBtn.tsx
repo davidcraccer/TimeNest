@@ -1,9 +1,15 @@
 import "../Calendar.css";
 import React from "react";
 
-const WeekBtn: React.FC = () => {
+interface WeekBtnProps {
+  onClick: () => void;
+}
+
+const WeekBtn: React.FC<WeekBtnProps> = ({ onClick }) => {
   return (
-    <button className="calendar-header-btn week-btn">Woche</button>
+    <button className="calendar-header-btn week-btn" onClick={onClick}>
+      Woche
+    </button>
   );
 };
 

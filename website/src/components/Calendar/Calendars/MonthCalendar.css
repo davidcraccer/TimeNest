@@ -1,0 +1,25 @@
+.table-month {
+  width: 100%;
+  height: 90%;
+}
+
+.table-month td {
+  color: rgb(32, 35, 42);
+}
+
+.table-month th,
+.table-month td {
+  padding: 5px;
+  border: 1px solid rgb(221, 221, 221);
+  width: 14.2857%;
+}
+
+.table-month .day {
+  position: relative;
+}
+
+.table-month .day-number {
+  position: absolute;
+  right: 8px;
+  top: 5px;
+}

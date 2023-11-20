@@ -49,32 +49,72 @@ export const generateCalendarRows = (
   return calendarRows;
 };
 
-// Handle Click Functions
+// Handle click functions
+// Previous Button
 export const handlePreviousClick = (
+  currentView: string,
   currentMonth: number,
+  currentYear: number,
+  currentDayOfWeek: number,
   setCurrentMonth: React.Dispatch<React.SetStateAction<number>>,
-  setCurrentYear: React.Dispatch<React.SetStateAction<number>>
+  setCurrentYear: React.Dispatch<React.SetStateAction<number>>,
+  setCurrentDayOfWeek: React.Dispatch<React.SetStateAction<number>>,
 ) => {
-  // Decrease the current month
-  setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
-
-  // If the current month is January, decrease the year
-  if (currentMonth === 0) {
-    setCurrentYear((prevYear) => prevYear - 1);
+  switch (currentView) {
+    case "month":
+      setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1));
+      if (currentMonth === 0) {
+        setCurrentYear((prevYear) => prevYear - 1);
+      }
+      break;
+    case "week":
+      // Handle previous week logic
+      break;
+    case "day":
+      // Handle previous day logic
+      // setCurrentYear();
+      // setCurrentMonth();
+      setCurrentDayOfWeek(currentDayOfWeek - 1);
+      break;
+    case "list":
+      // Handle previous list view logic
+      break;
+    default:
+      break;
   }
 };
 
+// Next Button
 export const handleNextClick = (
+  currentView: string,
   currentMonth: number,
+  currentYear: number,
+  currentDayOfWeek: number,
   setCurrentMonth: React.Dispatch<React.SetStateAction<number>>,
-  setCurrentYear: React.Dispatch<React.SetStateAction<number>>
+  setCurrentYear: React.Dispatch<React.SetStateAction<number>>,
+  setCurrentDayOfWeek: React.Dispatch<React.SetStateAction<number>>,
 ) => {
-  // Increase the current month
-  setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1));
-
-  // If the current month is December, increase the year
-  if (currentMonth === 11) {
-    setCurrentYear((prevYear) => prevYear + 1);
+  switch (currentView) {
+    case "month":
+      setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1));
+      if (currentMonth === 11) {
+        setCurrentYear((prevYear) => prevYear + 1);
+      }
+      break;
+    case "week":
+      // Handle next week logic
+      break;
+    case "day":
+      // Handle next day logic
+      // setCurrentYear(getFullYear());
+      // setCurrentMonth(getMonth());
+      setCurrentDayOfWeek(currentDayOfWeek + 1);
+      break;
+    case "list":
+      // Handle next list view logic
+      break;
+    default:
+      break;
   }
 };
 

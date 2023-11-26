@@ -26,7 +26,7 @@ const Calendar: React.FC = () => {
     new Date().getFullYear()
   );
   const [currentDayOfWeekTracker, setCurrentDayOfWeekTracker] = useState<number>(
-    // -2 to get the current day
+    // -2 to get the current week day
     new Date().getDay() - 2
   );
 
@@ -35,7 +35,8 @@ const Calendar: React.FC = () => {
   useEffect(() => {
     // Calculate the current date based on the currentDayOfWeekTracker
     const currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() + 1);
+    // +2 to get the current date
+    currentDate.setDate(currentDate.getDate() + 2);
     currentDate.setDate(currentDate.getDate() + currentDayOfWeekTracker);
 
     // Format
@@ -137,7 +138,7 @@ const Calendar: React.FC = () => {
             }}
           />
           <TodayBtn
-            onClick={() => handleTodayClick(setCurrentMonth, setCurrentYear)}
+            onClick={() => handleTodayClick(setCurrentMonth, setCurrentYear, setCurrentDayOfWeekTracker)}
           />
         </div>
         {renderCalendarHeader()}

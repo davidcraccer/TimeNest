@@ -120,9 +120,13 @@ export const handleNextClick = (
 
 export const handleTodayClick = (
   setCurrentMonth: React.Dispatch<React.SetStateAction<number>>,
-  setCurrentYear: React.Dispatch<React.SetStateAction<number>>
+  setCurrentYear: React.Dispatch<React.SetStateAction<number>>,
+  setCurrentDayOfWeekTracker: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   const today = new Date();
+  const defaultDayOfWeekTracker = today.getDay() - 2;
+
   setCurrentMonth(today.getMonth());
   setCurrentYear(today.getFullYear());
+  setCurrentDayOfWeekTracker(defaultDayOfWeekTracker);
 };

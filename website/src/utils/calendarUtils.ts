@@ -105,9 +105,6 @@ export const handleNextClick = (
       // Handle next week logic
       break;
     case "day":
-      // Handle next day logic
-      // setCurrentYear(getFullYear());
-      // setCurrentMonth(getMonth());
       setCurrentDayOfWeek(currentDayOfWeek + 1);
       break;
     case "list":

@@ -5,8 +5,8 @@
 ### React Router Integration
 Die App nutzt React Router, um eine benutzerfreundliche Navigation zu gewährleisten. Die Hauptkomponente `App` enthält Routen für die Startseite, die Anmeldung und die Registrierung. Die Navigation wird durch die `NavBar`-Komponente erleichtert, die den Benutzer zwischen den verschiedenen Seiten leitet.
 
-### Cha-Funktion (Chat)
-Zusätzlich zur Arbeitszeiterfassung und Verwaltung von Abwesenheiten wird die App eine integrierte Chat-Funktion (Cha-Funktion) bieten. Mitarbeiter können miteinander kommunizieren, Ankündigungen machen und schnell Informationen austauschen. Der Chat wird dazu beitragen, die Kommunikation im Team zu verbessern und die Zusammenarbeit zu erleichtern.
+### Chat-Funktion
+Zusätzlich zur Arbeitszeiterfassung und Verwaltung von Abwesenheiten wird die App eine integrierte Chat-Funktion bieten. Mitarbeiter können miteinander kommunizieren, Ankündigungen machen und schnell Informationen austauschen. Der Chat wird dazu beitragen, die Kommunikation im Team zu verbessern und die Zusammenarbeit zu erleichtern.
 
 ### Benachrichtigungsfunktion
 Die App wird eine Benachrichtigungsfunktion enthalten, um die Benutzer über wichtige Ereignisse zu informieren. Benachrichtigungen können beispielsweise über eingereichte Urlaubsanträge, genehmigte Überstunden oder Chat-Nachrichten erfolgen. Dies erhöht die Transparenz und sorgt dafür, dass Mitarbeiter zeitnah über relevante Geschehnisse informiert werden.

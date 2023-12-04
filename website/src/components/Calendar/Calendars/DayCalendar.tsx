@@ -1,5 +1,5 @@
 import React from "react";
-import "../Calendar.css";
+import "./DayCalendar.css";
 
 interface DayCalendarProps {
   currentMonth: number;
@@ -8,7 +8,7 @@ interface DayCalendarProps {
 }
 
 const DayCalendar: React.FC<DayCalendarProps> = ({ currentMonth, currentYear, currentDayOfWeekTracker }) => {
-  const dayOfWeekString = new Date(currentYear, currentMonth, currentDayOfWeekTracker).toLocaleDateString('de-DE', { weekday: 'short' });
+  const dayOfWeekString = new Date(currentYear, currentMonth, currentDayOfWeekTracker - 2).toLocaleDateString('de-DE', { weekday: 'short' });
 
   const generateTimeSlots = () => {
     const timeSlots = [];
@@ -16,7 +16,8 @@ const DayCalendar: React.FC<DayCalendarProps> = ({ currentMonth, currentYear, cu
       const timeLabel = hour < 10 ? `0${hour}:00` : `${hour}:00`;
       timeSlots.push(
         <tr key={hour}>
-          <td>{timeLabel}</td>
+          <td style={{ borderRight: '1px solid rgb(221, 221, 221)' }}>{timeLabel}</td>
+          <td></td>
         </tr>
       );
     }
@@ -24,7 +25,7 @@ const DayCalendar: React.FC<DayCalendarProps> = ({ currentMonth, currentYear, cu
   };
 
   return (
-    <table className="table">
+    <table className="table table-day">
       <thead>
         <tr>
           <th></th>

@@ -36,7 +36,7 @@ const Calendar: React.FC = () => {
     // Calculate the current date based on the currentDayOfWeekTracker
     const currentDate = new Date();
     // +2 to get the current date
-    currentDate.setDate(currentDate.getDate() + 2);
+    currentDate.setDate(currentDate.getDate() + 1);
     currentDate.setDate(currentDate.getDate() + currentDayOfWeekTracker);
 
     // Format

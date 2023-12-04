@@ -1,0 +1,9 @@
+.table-day th,
+.table-day td {
+  border: 1px solid rgb(221, 221, 221);
+}
+
+.table-day th:first-child,
+.table-day td:first-child {
+  width: 20%; /* Set the width of the first column to 20% */
+}

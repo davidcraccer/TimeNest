@@ -3,18 +3,16 @@ import "./Popup.css";
 
 interface PopupProps {
   selectedDate: Date | null;
-  times: { startTime: string; endTime: string }[];
-  onTimeChange: (
-    index: number,
-    field: "startTime" | "endTime",
-    value: string
-  ) => void;
+  onSave: (times: { startTime: string; endTime: string }[]) => void;
+  existingTimes: { startTime: string; endTime: string }[];
   onClose: () => void;
 }
 
-const Popup: React.FC<PopupProps> = ({ selectedDate, times, onTimeChange, onClose }) => {
+const Popup: React.FC<PopupProps> = ({ selectedDate, onSave, existingTimes, onClose }) => {
   const [totalHours, setTotalHours] = useState<number | null>(null);
-  const [timesState, setTimes] = useState<{ startTime: string; endTime: string }[]>(times);
+  const [timesState, setTimes] = useState<{ startTime: string; endTime: string }[]>(
+    existingTimes.length > 0 ? existingTimes : [{ startTime: "", endTime: "" }]
+  );
 
   const addTimeField = () => {
     setTimes((prevTimes) => [...prevTimes, { startTime: "", endTime: "" }]);
@@ -25,7 +23,16 @@ const Popup: React.FC<PopupProps> = ({ selectedDate, times, onTimeChange, onClos
     field: "startTime" | "endTime",
     value: string
   ) => {
-    onTimeChange(index, field, value);
+    setTimes((prevTimes) => {
+      const newTimes = [...prevTimes];
+      newTimes[index][field] = value;
+      return newTimes;
+    });
+  };
+
+  const handleSave = () => {
+    onSave(timesState);
+    onClose();
   };
 
   useEffect(() => {
@@ -74,7 +81,10 @@ const Popup: React.FC<PopupProps> = ({ selectedDate, times, onTimeChange, onClos
 
         {totalHours !== null && <p>Gesamt: {totalHours.toFixed(2)}h</p>}
 
-        <button onClick={onClose}>Schließen</button>
+        <div>
+          <button onClick={handleSave}>Speichern</button>
+          <button onClick={onClose}>Schließen</button>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
-import "./MonthCalendar.css";
 import React, { useState } from "react";
 import { generateCalendarRows } from "../../../utils/calendarUtils";
-import Popup from "../Popup/Popup"; 
+import Popup from "../Popup/Popup";
+import "./MonthCalendar.css";
+
 
 interface MonthCalendarProps {
   currentMonth: number;
@@ -14,14 +15,33 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [times, setTimes] = useState<{ startTime: string; endTime: string }[]>([
+    { startTime: "", endTime: "" },
+  ]);
 
   const calendarRows = generateCalendarRows(currentYear, currentMonth);
 
   const handleDayClick = (day: number) => {
-    // Create a new Date object with the selected year, month, and day
     const date = new Date(currentYear, currentMonth, day);
     setSelectedDate(date);
     setShowPopup(true);
+  };
+
+  const handleTimeChange = (
+    index: number,
+    field: "startTime" | "endTime",
+    value: string
+  ) => {
+    setTimes((prevTimes) => {
+      const newTimes = [...prevTimes];
+      newTimes[index][field] = value;
+      return newTimes;
+    });
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    // You can handle the saving of times state here if needed
   };
 
   return (
@@ -57,7 +77,9 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
       {showPopup && (
         <Popup
           selectedDate={selectedDate}
-          onClose={() => setShowPopup(false)}
+          times={times}
+          onTimeChange={handleTimeChange}
+          onClose={handleClosePopup}
         />
       )}
     </div>

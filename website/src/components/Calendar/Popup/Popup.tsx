@@ -1,24 +1,20 @@
-// Popup.tsx
 import React, { useState, useEffect } from "react";
-import "./Popup.css"; 
+import "./Popup.css";
 
 interface PopupProps {
   selectedDate: Date | null;
+  times: { startTime: string; endTime: string }[];
+  onTimeChange: (
+    index: number,
+    field: "startTime" | "endTime",
+    value: string
+  ) => void;
   onClose: () => void;
 }
 
-const formatDate = (date: Date): string => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // Months are zero-based
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
-
-const Popup: React.FC<PopupProps> = ({ selectedDate, onClose }) => {
-  const [times, setTimes] = useState<{ startTime: string; endTime: string }[]>([
-    { startTime: "", endTime: "" },
-  ]);
+const Popup: React.FC<PopupProps> = ({ selectedDate, times, onTimeChange, onClose }) => {
   const [totalHours, setTotalHours] = useState<number | null>(null);
+  const [timesState, setTimes] = useState<{ startTime: string; endTime: string }[]>(times);
 
   const addTimeField = () => {
     setTimes((prevTimes) => [...prevTimes, { startTime: "", endTime: "" }]);
@@ -29,16 +25,11 @@ const Popup: React.FC<PopupProps> = ({ selectedDate, onClose }) => {
     field: "startTime" | "endTime",
     value: string
   ) => {
-    setTimes((prevTimes) => {
-      const newTimes = [...prevTimes];
-      newTimes[index][field] = value;
-      return newTimes;
-    });
+    onTimeChange(index, field, value);
   };
 
   useEffect(() => {
-    // Calculate total hours whenever input values change
-    const total = times.reduce((acc, time) => {
+    const total = timesState.reduce((acc, time) => {
       if (time.startTime && time.endTime) {
         const start = new Date(`1970-01-01T${time.startTime}`);
         const end = new Date(`1970-01-01T${time.endTime}`);
@@ -49,14 +40,14 @@ const Popup: React.FC<PopupProps> = ({ selectedDate, onClose }) => {
     }, 0);
 
     setTotalHours(total);
-  }, [times]);
+  }, [timesState]);
 
   return (
     <div className="popup-overlay">
       <div className="popup-content">
-        <p>Datum: {selectedDate ? formatDate(selectedDate) : ""}</p>
+        <p>Datum: {selectedDate ? selectedDate.toDateString() : ""}</p>
 
-        {times.map((time, index) => (
+        {timesState.map((time, index) => (
           <div key={index}>
             {index === 0 && <label style={{ marginRight: "8px" }}>Arbeitszeit: </label>}
             <input
@@ -75,7 +66,7 @@ const Popup: React.FC<PopupProps> = ({ selectedDate, onClose }) => {
               onChange={(e) => handleTimeChange(index, "endTime", e.target.value)}
             />
 
-            {index === times.length - 1 && (
+            {index === timesState.length - 1 && (
               <button onClick={addTimeField}>+</button>
             )}
           </div>

@@ -26,38 +26,51 @@ const Calendar: React.FC = () => {
     new Date().getFullYear()
   );
   const [currentDayOfWeekTracker, setCurrentDayOfWeekTracker] = useState<number>(
-    // -2 to get the current week day
     new Date().getDay() - 2
   );
-
   const [formattedDate, setFormattedDate] = useState<string>("");
+  const [totalHoursMap, setTotalHoursMap] = useState<{ [key: string]: number }>(
+    {}
+  );
 
   useEffect(() => {
-    // Calculate the current date based on the currentDayOfWeekTracker
     const currentDate = new Date();
-    // +2 to get the current date
     currentDate.setDate(currentDate.getDate() + 1);
     currentDate.setDate(currentDate.getDate() + currentDayOfWeekTracker);
 
-    // Format
-    const options: Intl.DateTimeFormatOptions = { day: "2-digit", month: "short", year: "numeric" };
-    const formattedDateString = currentDate.toLocaleDateString('de-DE', options);
-
+    const options: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
+    const formattedDateString = currentDate.toLocaleDateString(
+      "de-DE",
+      options
+    );
 
     setFormattedDate(formattedDateString);
   }, [currentDayOfWeekTracker]);
 
+  // Function to handle saving total hours for the current month
+  const handleSaveTotalHours = (totalHours: number) => {
+    // Use the formatted month-year string as the key
+    const key = `${monthNames[currentMonth]}-${currentYear}`;
+    setTotalHoursMap((prevMap) => ({
+      ...prevMap,
+      [key]: totalHours,
+    }));
+  };
 
   const renderCalendarHeader = () => {
     switch (currentView) {
       case "month":
         return <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>;
       case "week":
-        return <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>; // Adjust as needed
+        return <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>;
       case "day":
         return <h2 className="mb-0">{`${formattedDate}`}</h2>;
       case "list":
-        return <h2 className="mb-0">List View</h2>; // Adjust as needed
+        return <h2 className="mb-0">List View</h2>;
       default:
         return <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>;
     }
@@ -85,14 +98,24 @@ const Calendar: React.FC = () => {
           <MonthCalendar
             currentMonth={currentMonth}
             currentYear={currentYear}
+            onSaveTotalHours={handleSaveTotalHours}
           />
         );
       case "week":
         return (
-          <WeekCalendar currentMonth={currentMonth} currentYear={currentYear} />
+          <WeekCalendar
+            currentMonth={currentMonth}
+            currentYear={currentYear}
+          />
         );
       case "day":
-        return <DayCalendar currentMonth={currentMonth} currentYear={currentYear} currentDayOfWeekTracker={currentDayOfWeekTracker} />;
+        return (
+          <DayCalendar
+            currentMonth={currentMonth}
+            currentYear={currentYear}
+            currentDayOfWeekTracker={currentDayOfWeekTracker}
+          />
+        );
       case "list":
         return <ListCalendar />;
       default:
@@ -100,17 +123,17 @@ const Calendar: React.FC = () => {
           <MonthCalendar
             currentMonth={currentMonth}
             currentYear={currentYear}
+            onSaveTotalHours={handleSaveTotalHours}
           />
         );
     }
   };
-  
 
   return (
     <div className="calendar-container text-center px-5 py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div className="">
-        <PreviousBtn
+          <PreviousBtn
             onClick={() => {
               handlePreviousClick(
                 currentView,
@@ -119,8 +142,7 @@ const Calendar: React.FC = () => {
                 currentDayOfWeekTracker,
                 setCurrentMonth,
                 setCurrentYear,
-                setCurrentDayOfWeekTracker,
-                
+                setCurrentDayOfWeekTracker
               );
             }}
           />
@@ -133,12 +155,18 @@ const Calendar: React.FC = () => {
                 currentDayOfWeekTracker,
                 setCurrentMonth,
                 setCurrentYear,
-                setCurrentDayOfWeekTracker,
+                setCurrentDayOfWeekTracker
               );
             }}
           />
           <TodayBtn
-            onClick={() => handleTodayClick(setCurrentMonth, setCurrentYear, setCurrentDayOfWeekTracker)}
+            onClick={() =>
+              handleTodayClick(
+                setCurrentMonth,
+                setCurrentYear,
+                setCurrentDayOfWeekTracker
+              )
+            }
           />
         </div>
         {renderCalendarHeader()}
@@ -151,6 +179,10 @@ const Calendar: React.FC = () => {
       </div>
 
       {renderCalendar()}
+      <h3 className="">
+        Gesamtstunden:{" "}
+        {totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0}h
+      </h3>
     </div>
   );
 };

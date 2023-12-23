@@ -6,11 +6,13 @@ import "./MonthCalendar.css";
 interface MonthCalendarProps {
   currentMonth: number;
   currentYear: number;
+  onSaveTotalHours: (totalHours: number) => void;
 }
 
 const MonthCalendar: React.FC<MonthCalendarProps> = ({
   currentMonth,
   currentYear,
+  onSaveTotalHours
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -23,14 +25,15 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
     setSelectedDate(date);
     setShowPopup(true);
   };
-
+  
   const handleClosePopup = () => {
     setShowPopup(false);
   };
 
   const handleSaveTimes = (times: { startTime: string; endTime: string }[]) => {
-    if (selectedDate) {
-      const dateKey = selectedDate.toISOString().split("T")[0];
+    const dateKey = selectedDate?.toISOString().split("T")[0];
+
+    if (dateKey) {
       setTimesMap((prevTimesMap) => ({
         ...prevTimesMap,
         [dateKey]: times,
@@ -77,6 +80,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
               ? timesMap[selectedDate.toISOString().split("T")[0]] || []
               : []
           }
+          onSaveTotalHours={onSaveTotalHours}
           onClose={handleClosePopup}
         />
       )}

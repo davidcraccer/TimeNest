@@ -4,6 +4,7 @@ import "./Popup.css";
 interface PopupProps {
   selectedDate: Date | null;
   onSave: (times: { startTime: string; endTime: string }[]) => void;
+  onSaveTotalHours: (totalHours: number) => void;
   existingTimes: { startTime: string; endTime: string }[];
   onClose: () => void;
 }
@@ -11,6 +12,7 @@ interface PopupProps {
 const Popup: React.FC<PopupProps> = ({
   selectedDate,
   onSave,
+  onSaveTotalHours,
   existingTimes,
   onClose,
 }) => {
@@ -47,6 +49,7 @@ const Popup: React.FC<PopupProps> = ({
   // Fn to handle saving entered times and close the Popup
   const handleSave = () => {
     onSave(timesState);
+    onSaveTotalHours(totalHours || 0)
     onClose();
   };
 

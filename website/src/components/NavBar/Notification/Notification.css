@@ -1,0 +1,28 @@
+.notification-container {
+    position: absolute;
+    top: 70px; /* Adjust this value as needed */
+    right: 130px;
+    width: 200px;
+    height: 300px;
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    background-color: #fff; /* Set your desired background color */
+    border: 1px solid #ccc; /* Add a border if desired */
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a box shadow for a subtle effect */
+    z-index: 1000; /* Ensure it's above other elements */
+  }
+  
+  .notification-container p {
+    font-size: 0.75em;
+    margin: 0;
+  }
+
+  .notification-container h6 {
+    font-weight: 700;
+    margin-bottom: 1em;
+  }
+  
+  .notification-item {
+    padding: 1em 0;
+    border-top: 1px solid #ccc; /* Add a bottom border to separate notifications */
+  }

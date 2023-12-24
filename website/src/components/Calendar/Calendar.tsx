@@ -25,9 +25,8 @@ const Calendar: React.FC = () => {
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
   );
-  const [currentDayOfWeekTracker, setCurrentDayOfWeekTracker] = useState<number>(
-    new Date().getDay() - 2
-  );
+  const [currentDayOfWeekTracker, setCurrentDayOfWeekTracker] =
+    useState<number>(new Date().getDay() - 2);
   const [formattedDate, setFormattedDate] = useState<string>("");
   const [totalHoursMap, setTotalHoursMap] = useState<{ [key: string]: number }>(
     {}
@@ -55,24 +54,40 @@ const Calendar: React.FC = () => {
   const handleSaveTotalHours = (totalHours: number) => {
     // Use the formatted month-year string as the key
     const key = `${monthNames[currentMonth]}-${currentYear}`;
-    setTotalHoursMap((prevMap) => ({
-      ...prevMap,
-      [key]: totalHours,
-    }));
+
+    setTotalHoursMap((prevMap) => {
+      const newTotalHoursMap = { ...prevMap };
+
+      // Accumulate total hours if the key already exists
+      if (newTotalHoursMap[key]) {
+        newTotalHoursMap[key] += totalHours;
+      } else {
+        // Set total hours if the key doesn't exist
+        newTotalHoursMap[key] = totalHours;
+      }
+
+      return newTotalHoursMap;
+    });
   };
 
   const renderCalendarHeader = () => {
     switch (currentView) {
       case "month":
-        return <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>;
+        return (
+          <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>
+        );
       case "week":
-        return <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>;
+        return (
+          <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>
+        );
       case "day":
         return <h2 className="mb-0">{`${formattedDate}`}</h2>;
       case "list":
         return <h2 className="mb-0">List View</h2>;
       default:
-        return <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>;
+        return (
+          <h2 className="mb-0">{`${monthNames[currentMonth]} ${currentYear}`}</h2>
+        );
     }
   };
 
@@ -103,10 +118,7 @@ const Calendar: React.FC = () => {
         );
       case "week":
         return (
-          <WeekCalendar
-            currentMonth={currentMonth}
-            currentYear={currentYear}
-          />
+          <WeekCalendar currentMonth={currentMonth} currentYear={currentYear} />
         );
       case "day":
         return (
@@ -179,9 +191,12 @@ const Calendar: React.FC = () => {
       </div>
 
       {renderCalendar()}
-      <h3 className="">
+      <h3 className="show-total-hours">
         Gesamtstunden:{" "}
-        {totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0}h
+        {(
+          totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0
+        ).toFixed(2)}
+        h
       </h3>
     </div>
   );

@@ -49,3 +49,9 @@
   background-color: rgb(15, 11, 56);
 }
 
+
+
+.show-total-hours {
+  text-align: right;
+  font-size: 1.2em;
+}

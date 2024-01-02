@@ -23,3 +23,15 @@
   right: 8px;
   top: 5px;
 }
+
+
+.dot {
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: blue;
+  border-radius: 50%;
+  display: block; /* Display the dot when the day has a value */
+}

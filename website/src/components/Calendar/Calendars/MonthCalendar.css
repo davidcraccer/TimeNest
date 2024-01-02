@@ -25,13 +25,14 @@
 }
 
 
-.dot {
+.blue-dot {
+  position: absolute;
   bottom: 5px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(990%) translateY(-800%);
   width: 8px;
   height: 8px;
-  background-color: blue;
+  background-color: #6EC0D8;
   border-radius: 50%;
-  display: block; /* Display the dot when the day has a value */
+  
 }

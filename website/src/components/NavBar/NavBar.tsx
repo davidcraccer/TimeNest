@@ -1,37 +1,45 @@
 import React, { useState } from "react";
 import "./NavBar.css";
-import Notification from "./Notification/Notification"; // Import your Notification component
+import Notification from "./Notification/Notification";
+import Profile from "./Profile/Profile";
 
 const NavBar: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
+  const [showProfile, setShowProfile] = useState(false); // New state for profile pop-up
 
   const handleNotificationClick = () => {
-    // Toggle the visibility of the notification
     setShowNotification(!showNotification);
+    setShowProfile(false);
+  };
+
+  const handleProfileClick = () => {
+    setShowProfile(!showProfile);
+    setShowNotification(false);
   };
 
   const notifications = [
     {
       user: "David",
       objective:
-        "allowed you to have vacation. Have a great vacation!",
+        "hat Ihnen erlaubt, Urlaub zu nehmen. Haben Sie einen schönen Urlaub!",
     },
     {
       user: "Lemon",
       objective:
-        "declined your vacation. Check the app for more details and consider resubmitting.",
+        "hat Ihren Urlaubsantrag abgelehnt. Überprüfen Sie die App für weitere Details und überlegen Sie eine erneute Einreichung.",
     },
     {
-      user: "HR Department",
+      user: "Personalabteilung",
       objective:
-        "notified you about a new employee, John Doe, who has joined the company. Please welcome him!",
+        "hat Sie über einen neuen Mitarbeiter, John Doe, informiert, der dem Unternehmen beigetreten ist. Bitte heißen Sie ihn willkommen!",
     },
     {
-      user: "Your Manager",
+      user: "Ihr Manager",
       objective:
-        "approved your overtime hours. These hours will be added to your compensation.",
+        "hat Ihre Überstunden genehmigt. Diese Stunden werden Ihrem Gehalt hinzugefügt.",
     },
   ];
+  
   
 
   return (
@@ -76,8 +84,13 @@ const NavBar: React.FC = () => {
                 Chats
               </a>
             </li>
+
             <li className="nav-item">
-              <a className="nav-link" href="#de">
+              <a
+                className="nav-link"
+                href="#de"
+                onClick={handleProfileClick}
+              >
                 Profil
               </a>
             </li>
@@ -85,8 +98,10 @@ const NavBar: React.FC = () => {
         </div>
       </div>
       {showNotification && <Notification notifications={notifications} />}
+      {showProfile && <Profile profilePicture="https://i.pinimg.com/originals/57/00/c0/5700c04197ee9a4372a35ef16eb78f4e.png" user="David" roleName="Arbeiter" />}
     </nav>
   );
 };
+
 
 export default NavBar;

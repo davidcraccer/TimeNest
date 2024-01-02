@@ -1,0 +1,55 @@
+/* Profile.css */
+.profile-container {
+    position: absolute;
+    top: 70px; /* Adjust this value as needed */
+    right: 20px; /* Adjust this value to position it more to the right */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .profile-picture img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .profile-details {
+    width: 100%;
+    text-align: center;
+  }
+
+  .user-name{
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+  
+  .role-name {
+    font-size: small;
+    font-style: italic;
+    margin-bottom: 1em;
+  }
+  
+  .edit-profile,
+  a {
+    font-size: 0.75em;
+    text-decoration: none;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  .a-container{
+    width: 100%;
+  }
+  
+  .a-container:hover {
+    background-color: whitesmoke;
+  }
+  

@@ -1,4 +1,3 @@
-// Login.tsx
 
 const Login = () => {
   return (

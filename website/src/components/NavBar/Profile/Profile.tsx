@@ -29,7 +29,7 @@ const Profile: React.FC<ProfileProps> = ({
           <a href="/einstellungen">Einstellungen</a>
         </div>
         <div className="a-container">
-          <a href="/abmelden">Abmelden</a>
+          <a href="/Login">Abmelden</a>
         </div>
       </div>
     </div>

@@ -38,7 +38,13 @@ const NavBar: React.FC = () => {
       objective:
         "hat Ihre Überstunden genehmigt. Diese Stunden werden Ihrem Gehalt hinzugefügt.",
     },
+    {
+      user: "Gesundheitsabteilung",
+      objective:
+        "informiert Sie über Ihre Krankheitsmeldung. Bitte verwenden Sie die App, um den genauen Zeitraum und weitere Details anzugeben.",
+    },
   ];
+  
   
   
 

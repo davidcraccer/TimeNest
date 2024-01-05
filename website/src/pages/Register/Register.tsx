@@ -1,12 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { runAsync } from '../../database/db'; // Update the path accordingly
 
 interface FormData {
   username: string;
   password: string;
   confirmPassword: string;
   role: string;
-  university: string; // Added university field
+  university: string;
 }
 
 const Register = () => {
@@ -15,7 +16,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     role: "",
-    university: "", // Initialize university field
+    university: "",
   });
 
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -32,19 +33,32 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     if (formData.password !== formData.confirmPassword) {
       setPasswordError("Die Passwörter stimmen nicht überein");
       return;
     }
-
+  
     // Clear the error message when passwords match
     setPasswordError(null);
-
-    // Add your registration logic here using formData
-    console.log("Form data submitted:", formData);
+  
+    // Insert user data into the database
+    const { username, password, role, university } = formData;
+    const insertQuery = `
+      INSERT INTO users (username, password, role, university)
+      VALUES (?, ?, ?, ?)
+    `;
+  
+    try {
+      await runAsync(insertQuery, [username, password, role, university]);
+      console.log('User registered successfully!');
+    
+      // You can perform additional database operations using 'db' here if needed
+    } catch (error) {
+      console.error('Error registering user:', (error as Error).message);
+    }    
   };
 
   return (

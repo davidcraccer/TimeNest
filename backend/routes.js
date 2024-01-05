@@ -3,25 +3,34 @@ const db = require("./db");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post('/register', async (req, res) => {
   const { username, password, role, university } = req.body;
 
-  // Hash the password before storing it in the database
-  const hashedPassword = await bcrypt.hash(password, 10);
+  // Check if the username already exists
+  db.get('SELECT * FROM users WHERE username = ?', [username], async (err, existingUser) => {
+    if (err) {
+      console.error('Error checking existing username:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else if (existingUser) {
+      // Username already exists
+      res.status(400).json({ error: 'Username already in use. Please choose a different username.' });
+    } else {
+      // Hash the password before storing it in the database
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-  db.run(
-    "INSERT INTO users (username, password, role, university) VALUES (?, ?, ?, ?)",
-    [username, hashedPassword, role, university],
-    (err) => {
-      if (err) {
-        console.error("Error registering user:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        res.status(201).json({ message: "User registered successfully" });
-      }
+      // Insert the new user
+      db.run('INSERT INTO users (username, password, role, university) VALUES (?, ?, ?, ?)', [username, hashedPassword, role, university], (err) => {
+        if (err) {
+          console.error('Error registering user:', err);
+          res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+          res.status(201).json({ message: 'User registered successfully' });
+        }
+      });
     }
-  );
+  });
 });
+
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;

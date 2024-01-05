@@ -1,14 +1,10 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { db } from '../../database/db';
+import axios from 'axios';
 
 interface FormData {
   username: string;
   password: string;
-}
-
-interface Row {
-  count: number;
 }
 
 const Login = () => {
@@ -29,20 +25,13 @@ const Login = () => {
   const verifyUserCredentials = async () => {
     const { username, password } = formData;
 
-    return new Promise<boolean>((resolve) => {
-      db.get(
-        'SELECT COUNT(*) AS count FROM users WHERE username = ? AND password = ?',
-        [username, password],
-        (err, row: Row) => {
-          if (err) {
-            console.error('Error verifying user credentials:', err);
-            resolve(false);
-          } else {
-            resolve(row.count > 0);
-          }
-        }
-      );
-    });
+    try {
+      const response = await axios.post('http://localhost:5001/api/login', { username, password });
+      return response.data.message === 'Login successful';
+    } catch (error: any) {
+      console.error('Error verifying user credentials:', error.response.data.error);
+      return false;
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

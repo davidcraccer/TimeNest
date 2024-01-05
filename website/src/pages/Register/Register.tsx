@@ -1,17 +1,9 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { runAsync } from '../../database/db'; // Update the path accordingly
-
-interface FormData {
-  username: string;
-  password: string;
-  confirmPassword: string;
-  role: string;
-  university: string;
-}
+import axios from "axios";
 
 const Register = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     username: "",
     password: "",
     confirmPassword: "",
@@ -21,13 +13,15 @@ const Register = () => {
 
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
 
-    // Clear password error when user types in either password or confirmPassword
+    // Clear password error when the user types in either password or confirmPassword
     if (passwordError) {
       setPasswordError(null);
     }
@@ -35,34 +29,38 @@ const Register = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordError("Die Passwörter stimmen nicht überein");
       return;
     }
-  
+
     // Clear the error message when passwords match
     setPasswordError(null);
-  
+
     // Insert user data into the database
     const { username, password, role, university } = formData;
-    const insertQuery = `
-      INSERT INTO users (username, password, role, university)
-      VALUES (?, ?, ?, ?)
-    `;
-  
+
     try {
-      await runAsync(insertQuery, [username, password, role, university]);
-      console.log('User registered successfully!');
-    
-      // You can perform additional database operations using 'db' here if needed
-    } catch (error) {
-      console.error('Error registering user:', (error as Error).message);
-    }    
+      await axios.post("http://localhost:5001/api/register", {
+        username,
+        password,
+        role,
+        university,
+      });
+      console.log("User registered successfully!");
+
+      // You can redirect the user or perform additional actions upon successful registration
+    } catch (error: any) {
+      console.error("Error registering user:", error.response.data.error);
+    }
   };
 
   return (
-    <div className="container p-4 mt-5 rounded bg-light shadow" style={{ maxWidth: "400px"}}>
+    <div
+      className="container p-4 mt-5 rounded bg-light shadow"
+      style={{ maxWidth: "400px" }}
+    >
       <div className="row justify-content-center">
         <div className="col-md-12">
           <h2>Registrierungsseite</h2>
@@ -128,10 +126,16 @@ const Register = () => {
                 onChange={handleChange}
                 required
               >
-                <option value="" disabled>Rolle auswählen</option>
+                <option value="" disabled>
+                  Rolle auswählen
+                </option>
                 <option value="Mitarbeiter">Mitarbeiter</option>
-                <option value="Aushilfs/Studentenkräfte">Aushilfs/Studentenkräfte</option>
-                <option value="Niederlassungsleiter">Niederlassungsleiter</option>
+                <option value="Aushilfs/Studentenkräfte">
+                  Aushilfs/Studentenkräfte
+                </option>
+                <option value="Niederlassungsleiter">
+                  Niederlassungsleiter
+                </option>
                 <option value="Geschäftsführung">Geschäftsführung</option>
               </select>
             </div>

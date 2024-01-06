@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../utils/authContext"; // Import the useAuth hook
+import { useAuth } from "../../utils/authContext"; 
 
 interface FormData {
   username: string;

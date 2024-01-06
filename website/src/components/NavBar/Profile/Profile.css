@@ -49,6 +49,11 @@
     width: 100%;
   }
   
+  .a-container a{
+    text-decoration: none; /* Remove underlines */
+    color: inherit; /* Inherit the color from the parent */
+  }
+  
   .a-container:hover {
     background-color: whitesmoke;
   }

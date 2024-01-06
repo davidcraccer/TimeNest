@@ -11,6 +11,7 @@ const Register = () => {
     university: "",
   });
 
+  const [usernameInavailable, setUsernameInavailable] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const handleChange = (
@@ -48,10 +49,12 @@ const Register = () => {
         role,
         university,
       });
+      setUsernameInavailable(false);
       console.log("User registered successfully!");
 
       // You can redirect the user or perform additional actions upon successful registration
     } catch (error: any) {
+      setUsernameInavailable(true);
       console.error("Error registering user:", error.response.data.error);
     }
   };
@@ -71,11 +74,16 @@ const Register = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${usernameInavailable? "is-invalid" : ""}`}
                 id="username"
                 onChange={handleChange}
                 required
               />
+              {usernameInavailable && (
+                <div className="invalid-feedback">
+                  Benutzername bereits vergeben.
+                </div>
+              )}
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">

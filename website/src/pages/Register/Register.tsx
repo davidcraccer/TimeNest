@@ -7,6 +7,7 @@ const Register = () => {
 
   const [formData, setFormData] = useState({
     username: "",
+    fullName: "",
     password: "",
     confirmPassword: "",
     role: "",
@@ -42,11 +43,12 @@ const Register = () => {
 
     setPasswordError(null);
 
-    const { username, password, role, university } = formData;
+    const { username, fullName, password, role, university } = formData;
 
     try {
       await axios.post("http://localhost:5001/api/register", {
         username,
+        fullName,
         password,
         role,
         university,
@@ -58,7 +60,7 @@ const Register = () => {
       // Redirect to login page after a delay
       setTimeout(() => {
         navigate("/login");
-      }, 2000); 
+      }, 2000);
     } catch (error: any) {
       setUsernameInavailable(true);
       console.error("Error registering user:", error.response.data.error);
@@ -99,6 +101,18 @@ const Register = () => {
                     Benutzername bereits vergeben.
                   </div>
                 )}
+              </div>
+              <div className="mb-3">
+                <label htmlFor="fullName" className="form-label">
+                  Vollständiger Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="fullName"
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">

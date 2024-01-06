@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./db');
 const routes = require('./routes'); // Import the routes module
 const app = express();
 

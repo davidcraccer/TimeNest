@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-  const { username, password, role, university } = req.body;
+  const { username, fullName, password, role, university } = req.body;
 
   // Check if the username already exists
   db.get('SELECT * FROM users WHERE username = ?', [username], async (err, existingUser) => {
@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Insert the new user
-      db.run('INSERT INTO users (username, password, role, university) VALUES (?, ?, ?, ?)', [username, hashedPassword, role, university], (err) => {
+      db.run('INSERT INTO users (username, fullName, password, role, university) VALUES (?, ?, ?, ?, ?)', [username, fullName, hashedPassword, role, university], (err) => {
         if (err) {
           console.error('Error registering user:', err);
           res.status(500).json({ error: 'Internal Server Error' });

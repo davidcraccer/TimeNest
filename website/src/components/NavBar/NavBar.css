@@ -26,7 +26,7 @@ nav {
   font-size: 1rem;
 }
 
-.nav-link:hover {
+.nav-item .nav-link:hover {
   color: white;
 }
 

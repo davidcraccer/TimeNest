@@ -131,11 +131,7 @@ const NavBar: React.FC = () => {
       </div>
       {showNotification && <Notification notifications={notifications} />}
       {showProfile && (
-        <Profile
-          profilePicture="https://i.pinimg.com/originals/57/00/c0/5700c04197ee9a4372a35ef16eb78f4e.png"
-          user="David"
-          roleName="Arbeiter"
-        />
+        <Profile/>
       )}
     </nav>
   );

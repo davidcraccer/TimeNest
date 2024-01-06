@@ -53,7 +53,7 @@ const Login = () => {
     if (isAuthenticated) {
       console.log("User authenticated successfully!");
 
-      login();
+      login({ fullName: "David Svoboda", role: "Arbeiter" });
       navigate("/");
     } else {
       console.error(

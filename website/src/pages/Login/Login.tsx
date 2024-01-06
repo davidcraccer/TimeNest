@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 interface FormData {
   username: string;
@@ -15,21 +15,28 @@ const Login = () => {
     password: "",
   });
 
+  const [authError, setAuthError] = useState<boolean>(false);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
+    // Clear authentication error when the user types
+    setAuthError(false);
   };
 
   const verifyUserCredentials = async () => {
     const { username, password } = formData;
 
     try {
-      const response = await axios.post('http://localhost:5001/api/login', { username, password });
-      return response.data.message === 'Login successful';
+      const response = await axios.post("http://localhost:5001/api/login", {
+        username,
+        password,
+      });
+      return response.data.message === "Login successful";
     } catch (error: any) {
-      console.error('Error verifying user credentials:', error.response.data.error);
+      console.error("Error verifying user credentials:", error.response.data.error);
       return false;
     }
   };
@@ -40,12 +47,13 @@ const Login = () => {
     const isAuthenticated = await verifyUserCredentials();
 
     if (isAuthenticated) {
-      console.log('User authenticated successfully!');
+      console.log("User authenticated successfully!");
       // Redirect upon successful authentication
-      navigate('/');
+      navigate("/");
     } else {
-      console.error('Invalid credentials. Please check your username and password.');
-      // Handle authentication failure
+      console.error("Invalid credentials. Please check your username and password.");
+      // Set authentication error
+      setAuthError(true);
     }
   };
 
@@ -61,7 +69,7 @@ const Login = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${authError ? "is-invalid" : ""}`}
                 id="username"
                 onChange={handleChange}
                 required
@@ -73,11 +81,12 @@ const Login = () => {
               </label>
               <input
                 type="password"
-                className="form-control"
+                className={`form-control ${authError ? "is-invalid" : ""}`}
                 id="password"
                 onChange={handleChange}
                 required
               />
+              {authError && <div className="invalid-feedback">Benutzername oder Passwort ist falsch.</div>}
             </div>
             <button type="submit" className="btn btn-primary">
               Anmelden

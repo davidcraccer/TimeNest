@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../utils/authContext"; // Import the useAuth hook
 
 interface FormData {
   username: string;
@@ -9,6 +10,7 @@ interface FormData {
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -22,7 +24,6 @@ const Login = () => {
       ...formData,
       [e.target.id]: e.target.value,
     });
-    // Clear authentication error when the user types
     setAuthError(false);
   };
 
@@ -36,7 +37,10 @@ const Login = () => {
       });
       return response.data.message === "Login successful";
     } catch (error: any) {
-      console.error("Error verifying user credentials:", error.response.data.error);
+      console.error(
+        "Error verifying user credentials:",
+        error.response.data.error
+      );
       return false;
     }
   };
@@ -48,17 +52,22 @@ const Login = () => {
 
     if (isAuthenticated) {
       console.log("User authenticated successfully!");
-      // Redirect upon successful authentication
+
+      login();
       navigate("/");
     } else {
-      console.error("Invalid credentials. Please check your username and password.");
-      // Set authentication error
+      console.error(
+        "Invalid credentials. Please check your username and password."
+      );
       setAuthError(true);
     }
   };
 
   return (
-    <div className="container p-4 rounded bg-light shadow" style={{ maxWidth: "400px", marginTop: "6em" }}>
+    <div
+      className="container p-4 rounded bg-light shadow"
+      style={{ maxWidth: "400px", marginTop: "6em" }}
+    >
       <div className="row justify-content-center">
         <div className="col-md-12">
           <h2>Anmeldeseite</h2>
@@ -86,7 +95,11 @@ const Login = () => {
                 onChange={handleChange}
                 required
               />
-              {authError && <div className="invalid-feedback">Benutzername oder Passwort ist falsch.</div>}
+              {authError && (
+                <div className="invalid-feedback">
+                  Benutzername oder Passwort ist falsch.
+                </div>
+              )}
             </div>
             <button type="submit" className="btn btn-primary">
               Anmelden

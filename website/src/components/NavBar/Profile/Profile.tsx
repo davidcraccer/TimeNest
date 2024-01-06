@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Profile.css";
 
 interface ProfileProps {
@@ -21,15 +22,15 @@ const Profile: React.FC<ProfileProps> = ({
         <p className="user-name">{user}</p>
         <p className="role-name">{roleName}</p>
         <div className="a-container">
-          <a href="/profile" className="edit-profile">
+          <Link to="/profile" className="edit-profile">
             Edit Profile
-          </a>
+          </Link>
         </div>
         <div className="a-container">
-          <a href="/einstellungen">Einstellungen</a>
+          <Link to="/einstellungen">Einstellungen</Link>
         </div>
         <div className="a-container">
-          <a href="/login">Abmelden</a>
+          <Link to="/login">Abmelden</Link>
         </div>
       </div>
     </div>

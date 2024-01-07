@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../utils/authContext"; 
+import { useAuth } from "../../utils/authContext";
 
 interface FormData {
   username: string;
@@ -29,16 +29,13 @@ const Login = () => {
 
   const verifyUserCredentials = async () => {
     const { username, password } = formData;
-  
+
     try {
       const response = await axios.post("http://localhost:5001/api/login", {
         username,
         password,
       });
-      console.log(response)
-  
-      return response.data; // Return the entire response
-  
+      return response.data;
     } catch (error: any) {
       console.error(
         "Error verifying user credentials:",
@@ -47,20 +44,14 @@ const Login = () => {
       return null;
     }
   };
-  
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     const response = await verifyUserCredentials();
-  
+
     if (response && response.message === "Login successful") {
-      console.log("User authenticated successfully!");
-  
-      // Access user data directly from the response
       const userData = response.user;
-      console.log(userData)
-      console.log(response)
-  
       login(userData);
       navigate("/");
     } else {
@@ -70,7 +61,6 @@ const Login = () => {
       setAuthError(true);
     }
   };
-  
 
   return (
     <div

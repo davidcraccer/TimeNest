@@ -29,31 +29,39 @@ const Login = () => {
 
   const verifyUserCredentials = async () => {
     const { username, password } = formData;
-
+  
     try {
       const response = await axios.post("http://localhost:5001/api/login", {
         username,
         password,
       });
-      return response.data.message === "Login successful";
+      console.log(response)
+  
+      return response.data; // Return the entire response
+  
     } catch (error: any) {
       console.error(
         "Error verifying user credentials:",
         error.response.data.error
       );
-      return false;
+      return null;
     }
   };
-
+  
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const isAuthenticated = await verifyUserCredentials();
-
-    if (isAuthenticated) {
+  
+    const response = await verifyUserCredentials();
+  
+    if (response && response.message === "Login successful") {
       console.log("User authenticated successfully!");
-
-      login({ fullName: "David Svoboda", role: "Arbeiter" });
+  
+      // Access user data directly from the response
+      const userData = response.user;
+      console.log(userData)
+      console.log(response)
+  
+      login(userData);
       navigate("/");
     } else {
       console.error(
@@ -62,6 +70,7 @@ const Login = () => {
       setAuthError(true);
     }
   };
+  
 
   return (
     <div

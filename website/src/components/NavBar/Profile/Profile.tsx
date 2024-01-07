@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import "./Profile.css";
 import { useAuth } from "../../../utils/authContext";
 
-const Profile: React.FC = () => {
+interface ProfileProps {
+  handleLogout: () => void;
+}
+
+const Profile: React.FC<ProfileProps> = ({ handleLogout }) => {
   const { user } = useAuth();
   const defaultProfilePicture =
     "https://i.pinimg.com/originals/57/00/c0/5700c04197ee9a4372a35ef16eb78f4e.png";
@@ -25,7 +29,9 @@ const Profile: React.FC = () => {
           <Link to="/einstellungen">Einstellungen</Link>
         </div>
         <div className="a-container">
-          <Link to="/login">Abmelden</Link>
+          <Link to="/login" onClick={handleLogout}>
+            Abmelden
+          </Link>
         </div>
       </div>
     </div>

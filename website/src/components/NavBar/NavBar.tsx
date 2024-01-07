@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./NavBar.css";
 import Notification from "./Notification/Notification";
+import { notifications } from "./Notification/notifcationsData";
 import Profile from "./Profile/Profile";
-
 
 const NavBar: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-
   const location = useLocation();
+
   const isLoginPage = location.pathname === "/login";
   const isRegisterPage = location.pathname === "/register";
 
@@ -23,56 +23,38 @@ const NavBar: React.FC = () => {
     setShowNotification(false);
   };
 
-  const notifications = [
-    {
-      user: "David",
-      objective:
-        "hat Ihnen erlaubt, Urlaub zu nehmen. Haben Sie einen schönen Urlaub!",
-    },
-    {
-      user: "Lemon",
-      objective:
-        "hat Ihren Urlaubsantrag abgelehnt. Überprüfen Sie die App für weitere Details und überlegen Sie eine erneute Einreichung.",
-    },
-    {
-      user: "Ihr Manager",
-      objective:
-        "hat Ihre Überstunden genehmigt. Diese Stunden werden Ihrem Gehalt hinzugefügt.",
-    },
-    {
-      user: "Mitarbeiter",
-      objective:
-        "Sie haben erfolgreich Ihre Krankmeldung gemeldet. Eine E-Mail wurde automatisch generiert und an Ihre Krankenversicherung gesendet zwecks weiterer Bearbeitung.",
-    },
-    {
-      user: "HR",
-      objective:
-        "Ein Mitarbeiter hat sich krank gemeldet. Bitte beachten Sie dies für HR-Aufzeichnungen und Abrechnungszwecke.",
-    },
-    {
-      user: "Vorgesetzter",
-      objective:
-        "Ein Mitarbeiter in Ihrem Team hat sich krank gemeldet. Bitte beachten Sie mögliche unmittelbare arbeitsbezogene Auswirkungen und planen Sie notwendige Anpassungen.",
-    },
-    {
-      user: "Vorgesetzter",
-      objective:
-        "Einer Ihrer Teammitglieder hat Überstunden angesammelt. Bitte überprüfen Sie dies und nehmen Sie bei Bedarf Anpassungen vor.",
-    },
-    {
-      user: "HR",
-      objective:
-        "Ein Mitarbeiter ist krankgeschrieben. Bitte beachten Sie die mögliche Lohnfortzahlung während dieser Zeit für die Lohnabrechnung.",
-    },
-    {
-      user: "Personalabteilung",
-      objective:
-        "hat Sie über einen neuen Mitarbeiter, John Doe, informiert, der dem Unternehmen beigetreten ist. Bitte heißen Sie ihn willkommen!",
-    },
-  ];
+  const handleLogout = () => {
+    // Close the profile component
+    setShowProfile(false);
+  };
+
+  // Add a ref to the navbar element
+  const navbarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleDocumentClick = (event: MouseEvent) => {
+      // Check if the click occurred outside the navbar, notification, and profile elements
+      if (
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target as Node) &&
+        !event.defaultPrevented
+      ) {
+        setShowNotification(false);
+        setShowProfile(false);
+      }
+    };
+
+    // Add click event listener to the document
+    document.addEventListener("click", handleDocumentClick);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, []);
 
   return (
-    <nav className="navbar-expand-lg">
+    <nav className="navbar-expand-lg" ref={navbarRef}>
       <div className="navbar-dark">
         <Link to="/">
           <img
@@ -117,11 +99,7 @@ const NavBar: React.FC = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link
-                  to="/"
-                  className="nav-link"
-                  onClick={handleProfileClick}
-                >
+                <Link to="/" className="nav-link" onClick={handleProfileClick}>
                   Profil
                 </Link>
               </li>
@@ -130,9 +108,7 @@ const NavBar: React.FC = () => {
         )}
       </div>
       {showNotification && <Notification notifications={notifications} />}
-      {showProfile && (
-        <Profile/>
-      )}
+      {showProfile && <Profile handleLogout={handleLogout} />}
     </nav>
   );
 };

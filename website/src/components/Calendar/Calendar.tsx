@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Calendar.css";
-import PreviousBtn from "./Buttons/PreviousBtn";
-import NextBtn from "./Buttons/NextBtn";
-import TodayBtn from "./Buttons/TodayBtn";
-import MonthBtn from "./Buttons/MonthBtn";
-import WeekBtn from "./Buttons/WeekBtn";
-import DayBtn from "./Buttons/DayBtn";
-import ListBtn from "./Buttons/ListBtn";
+import PreviousBtn from "./HeaderBtns/PreviousBtn";
+import NextBtn from "./HeaderBtns/NextBtn";
+import TodayBtn from "./HeaderBtns/TodayBtn";
+import MonthBtn from "./HeaderBtns/MonthBtn";
+import WeekBtn from "./HeaderBtns/WeekBtn";
+import DayBtn from "./HeaderBtns/DayBtn";
+import ListBtn from "./HeaderBtns/ListBtn";
 import {
   handlePreviousClick,
   handleNextClick,
@@ -16,6 +16,8 @@ import MonthCalendar from "./Calendars/MonthCalendar";
 import WeekCalendar from "./Calendars/WeekCalendar";
 import DayCalendar from "./Calendars/DayCalendar";
 import ListCalendar from "./Calendars/ListCalendar";
+import SickDaysButton from "./FooterBtns/SickDaysBtn";
+import VacationBtn from "./FooterBtns/VacationBtn";
 
 const Calendar: React.FC = () => {
   const [currentView, setCurrentView] = useState<string>("month");
@@ -191,13 +193,20 @@ const Calendar: React.FC = () => {
       </div>
 
       {renderCalendar()}
-      <h3 className="show-total-hours">
-        Gesamtstunden:{" "}
-        {(
-          totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0
-        ).toFixed(2)}
-        h
-      </h3>
+
+      <div className="d-flex justify-content-between">
+        <div className="">
+          <VacationBtn onClick={() => null}/>
+          <SickDaysButton onClick={() => null}/>
+        </div>
+        <h3 className="show-total-hours">
+          Gesamtstunden:{" "}
+          {(
+            totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0
+          ).toFixed(2)}
+          h
+        </h3>
+      </div>
     </div>
   );
 };

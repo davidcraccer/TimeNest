@@ -37,6 +37,19 @@
   border-radius: 3.5px;
 }
 
+.calendar-footer-btn {
+  background-color: rgb(44, 62, 80);
+  border-radius: 3.5px;
+  font-family: Muli, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  height: 34.1875px;
+  color: rgb(255, 255, 255);
+  padding: 5.6px 9.1px;
+  border: 1px solid rgb(21, 30, 39);
+}
+
 .month-btn {
   width: 61.796875px;
   background-color: rgb(15, 11, 56);

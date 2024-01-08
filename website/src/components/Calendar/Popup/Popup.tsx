@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import "./Popup.css";
 
 interface PopupProps {
@@ -49,7 +50,7 @@ const Popup: React.FC<PopupProps> = ({
   // Fn to handle saving entered times and close the Popup
   const handleSave = () => {
     onSave(timesState);
-    onSaveTotalHours(totalHours || 0)
+    onSaveTotalHours(totalHours || 0);
     onClose();
   };
 
@@ -71,48 +72,66 @@ const Popup: React.FC<PopupProps> = ({
   }, [timesState]);
 
   return (
-    <div className="popup-overlay">
-      <div className="popup-content">
+    <Modal show={true} onHide={onClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Arbeitszeit erfassen</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
         <p>Datum: {selectedDate ? selectedDate.toDateString() : ""}</p>
 
         {timesState.map((time, index) => (
-          <div key={index}>
+          <div key={index} className="mb-3">
             {index === 0 && (
               <label style={{ marginRight: "8px" }}>Arbeitszeit: </label>
             )}
 
-            <input
-              type="time"
-              value={time.startTime}
-              onChange={(e) =>
-                handleTimeChange(index, "startTime", e.target.value)
-              }
-            />
+            <div className="d-flex">
+              <div className="mr-2">
+                <Form.Group controlId={`startTime-${index}`}>
+                  <Form.Control
+                    type="time"
+                    value={time.startTime}
+                    onChange={(e) =>
+                      handleTimeChange(index, "startTime", e.target.value)
+                    }
+                  />
+                </Form.Group>
+              </div>
 
-            <span> - </span>
-
-            <input
-              type="time"
-              value={time.endTime}
-              onChange={(e) =>
-                handleTimeChange(index, "endTime", e.target.value)
-              }
-            />
-
+              <div className="mr-2">
+                <Form.Group controlId={`endTime-${index}`}>
+                  <Form.Control
+                    type="time"
+                    value={time.endTime}
+                    onChange={(e) =>
+                      handleTimeChange(index, "endTime", e.target.value)
+                    }
+                  />
+                </Form.Group>
+              </div>
             {index === timesState.length - 1 && (
-              <button onClick={addTimeField}>+</button>
+              <div className="d-flex">
+                <Button variant="link" onClick={addTimeField}>
+                  Hinzufügen
+                </Button>
+              </div>
             )}
+            </div>
+
           </div>
         ))}
 
         {totalHours !== null && <p>Gesamt: {totalHours.toFixed(2)}h</p>}
-
-        <div>
-          <button onClick={handleSave}>Speichern</button>
-          <button onClick={onClose}>Schließen</button>
-        </div>
-      </div>
-    </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={handleSave}>
+          Speichern
+        </Button>
+        <Button variant="secondary" onClick={onClose}>
+          Schließen
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

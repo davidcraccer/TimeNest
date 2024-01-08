@@ -18,6 +18,8 @@ import DayCalendar from "./Calendars/DayCalendar";
 import ListCalendar from "./Calendars/ListCalendar";
 import SickDaysButton from "./FooterBtns/SickDaysBtn";
 import VacationBtn from "./FooterBtns/VacationBtn";
+import VacationModal from "./FooterBtns/VacationModal";
+import SickDaysModal from "./FooterBtns/SickDaysModal";
 
 const Calendar: React.FC = () => {
   const [currentView, setCurrentView] = useState<string>("month");
@@ -33,6 +35,9 @@ const Calendar: React.FC = () => {
   const [totalHoursMap, setTotalHoursMap] = useState<{ [key: string]: number }>(
     {}
   );
+
+  const [showVacationModal, setShowVacationModal] = useState(false);
+  const [showSickDaysModal, setShowSickDaysModal] = useState(false);
 
   useEffect(() => {
     const currentDate = new Date();
@@ -195,15 +200,24 @@ const Calendar: React.FC = () => {
       {renderCalendar()}
 
       <div className="d-flex justify-content-between">
-        <div className="">
-          <VacationBtn onClick={() => null}/>
-          <SickDaysButton onClick={() => null}/>
+      <div className="">
+          <VacationBtn onClick={() => setShowVacationModal(true)} />
+          <SickDaysButton onClick={() => setShowSickDaysModal(true)} />
+          
         </div>
+        <VacationModal
+          show={showVacationModal}
+          onHide={() => setShowVacationModal(false)}
+        />
+        <SickDaysModal
+          show={showSickDaysModal}
+          onHide={() => setShowSickDaysModal(false)}
+        />
         <h3 className="show-total-hours">
           Gesamtstunden:{" "}
           {(
             totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0
-          ).toFixed(2)}
+            ).toFixed(2)}
           h
         </h3>
       </div>

@@ -6,17 +6,43 @@ interface SickDaysModalProps {
   onHide: () => void;
 }
 
+const isValidDate = (dateString: string): boolean => {
+  // Simple date validation for dd.mm.yyyy format
+  const regex = /^\d{2}\.\d{2}\.\d{4}$/;
+  return regex.test(dateString);
+};
+
 const SickDaysModal: React.FC<SickDaysModalProps> = ({ show, onHide }) => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const [startDateError, setStartDateError] = useState<string>("");
+  const [endDateError, setEndDateError] = useState<string>("");
 
   const handleSave = () => {
-    // Add logic to handle saving sick days
-    // You can use the startDate and endDate values
-    // For example, you can pass them to a parent component or perform an API call
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-    onHide(); // Close the modal
+    let hasError = false;
+
+    if (!isValidDate(startDate)) {
+      setStartDateError("Invalid start date format (dd.mm.yyyy)");
+      hasError = true;
+    } else {
+      setStartDateError("");
+    }
+
+    if (!isValidDate(endDate)) {
+      setEndDateError("Invalid end date format (dd.mm.yyyy)");
+      hasError = true;
+    } else {
+      setEndDateError("");
+    }
+
+    if (!hasError) {
+      // Add logic to handle saving sick days
+      // You can use the formatted startDate and endDate values
+      // For example, you can pass them to a parent component or perform an API call
+      console.log("Formatted Start Date:", startDate);
+      console.log("Formatted End Date:", endDate);
+      onHide(); // Close the modal
+    }
   };
 
   return (
@@ -29,18 +55,28 @@ const SickDaysModal: React.FC<SickDaysModalProps> = ({ show, onHide }) => {
           <Form.Group controlId="startDate">
             <Form.Label>Start Date:</Form.Label>
             <Form.Control
-              type="date"
+              type="text"
+              placeholder="dd.mm.yyyy"
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={(e) => {
+                setStartDate(e.target.value);
+                setStartDateError("");
+              }}
             />
+            <Form.Text className="text-danger">{startDateError}</Form.Text>
           </Form.Group>
           <Form.Group controlId="endDate">
             <Form.Label>End Date:</Form.Label>
             <Form.Control
-              type="date"
+              type="text"
+              placeholder="dd.mm.yyyy"
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={(e) => {
+                setEndDate(e.target.value);
+                setEndDateError("");
+              }}
             />
+            <Form.Text className="text-danger">{endDateError}</Form.Text>
           </Form.Group>
         </Form>
       </Modal.Body>

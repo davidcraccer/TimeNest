@@ -10,7 +10,7 @@ const Register = () => {
     fullName: "",
     password: "",
     confirmPassword: "",
-    role: "",
+    role: "Mitarbeiter",
     university: "",
   });
 
@@ -70,7 +70,7 @@ const Register = () => {
   return (
     <>
       {registrationSuccess && (
-        <div className="alert alert-success" role="alert">
+        <div className="alert alert-success text-center" role="alert">
           Benutzer erfolgreich registriert! Sie werden zum Anmeldebildschirm
           weitergeleitet.
         </div>

@@ -18,3 +18,23 @@
     text-align: center;
   }
   
+  /* Add this CSS to your stylesheet */
+/* Add this CSS to your stylesheet */
+.circle-button {
+  border-radius: 50%;
+  width: 30px; /* Adjust as needed */
+  height: 30px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background-color: #ccc; /* Set your desired neutral color */
+  color: #333; /* Set your desired text color */
+  border: 1px solid #999; /* Set your desired border color */
+}
+
+.circle-button:hover {
+  background-color: #bbb; /* Set your desired color on hover */
+  border-color: #999; /* Set the same border color as the default */
+  outline: none; /* Remove the default outline on focus */
+}

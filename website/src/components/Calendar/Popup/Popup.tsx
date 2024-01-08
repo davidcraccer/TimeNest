@@ -79,13 +79,10 @@ const Popup: React.FC<PopupProps> = ({
       <Modal.Body>
         <p>Datum: {selectedDate ? selectedDate.toDateString() : ""}</p>
 
-        {timesState.map((time, index) => (
-          <div key={index} className="mb-3">
-            {index === 0 && (
-              <label style={{ marginRight: "8px" }}>Arbeitszeit: </label>
-            )}
-
-            <div className="d-flex">
+        <label style={{ marginRight: "8px" }}>Arbeitszeit: </label>
+        <div className="d-flex flex-wrap">
+          {timesState.map((time, index) => (
+            <div key={index} className="d-flex me-2">
               <div className="mr-2">
                 <Form.Group controlId={`startTime-${index}`}>
                   <Form.Control
@@ -109,17 +106,24 @@ const Popup: React.FC<PopupProps> = ({
                   />
                 </Form.Group>
               </div>
-            {index === timesState.length - 1 && (
-              <div className="d-flex">
-                <Button variant="link" onClick={addTimeField}>
-                  Hinzufügen
-                </Button>
-              </div>
-            )}
+              {index === timesState.length - 1 && (
+                <div className="d-flex align-items-center gap-1 ms-2 ">
+                  <Button className="circle-button" onClick={addTimeField}>
+                    +
+                  </Button>
+                  {index > 0 && (
+                    <Button
+                      className="circle-button"
+                      onClick={() => setTimes(timesState.slice(0, index))}
+                    >
+                      -
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
-
-          </div>
-        ))}
+          ))}
+        </div>
 
         {totalHours !== null && <p>Gesamt: {totalHours.toFixed(2)}h</p>}
       </Modal.Body>

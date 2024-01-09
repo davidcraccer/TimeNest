@@ -21,7 +21,7 @@ const ListCalendar: React.FC = () => {
         {events.map((event, index) => (
           <tr key={index}>
             <td>{event.time}</td>
-            <td className="liste-description"><span className="dot"></span>{event.description}</td>
+            <td className="liste-description"><span className="list-dot"></span>{event.description}</td>
           </tr>
         ))}
       </tbody>

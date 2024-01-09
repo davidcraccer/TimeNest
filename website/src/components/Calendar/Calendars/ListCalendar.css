@@ -3,7 +3,7 @@
     position: relative;
 }
   
-.dot::after{
+.list-dot::after{
     content: "•";
     color: #6EC0D8;
     font-size: 50px;

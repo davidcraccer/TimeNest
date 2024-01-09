@@ -67,9 +67,6 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
       return dateKey >= startDateKey && dateKey <= endDateKey;
     });
   };
-  
-  
-
 
   return (
     <div>
@@ -97,7 +94,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                   <div className="day-number">{day !== 0 ? day : ""}</div>
                   {day !== 0 &&
                   hasDataForDate(new Date(currentYear, currentMonth, day)) ? (
-                    <div className="blue-dot"></div>
+                    <div className="work-dot"></div>
                   ) : (
                     <div></div>
                   )}
@@ -106,7 +103,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                     new Date(currentYear, currentMonth, day),
                     vacationDates
                   ) ? (
-                    <div className="blue-dot"></div>
+                    <div className="vacation-dot"></div>
                   ) : (
                     <div></div>
                   )}

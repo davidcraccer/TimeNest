@@ -25,13 +25,24 @@
   top: 5px;
 }
 
-.blue-dot {
+.work-dot, .vacation-dot, .sick-dot  {
   position: absolute;
   right: 1px;
   top: 30px;
   transform: translateX(-100%);
   width: 8px;
   height: 8px;
-  background-color: #6EC0D8;
   border-radius: 50%;
+}
+
+.work-dot {
+  background-color: #6EC0D8;
+}
+
+.vacation-dot {
+  background-color: orange; /* Use your preferred color for vacation */
+}
+
+.sick-dot {
+  background-color: red; /* Use your preferred color for sick */
 }

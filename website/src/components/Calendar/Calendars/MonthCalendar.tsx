@@ -50,18 +50,24 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
     return !!timesMap[dateKey];
   };
 
+  const formatDateWithoutTime = (date: Date): string => {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return date.toLocaleDateString('de-DE', options);
+  };
+  
   const hasVacationForDate = (date: Date, vacationDates: string[]): boolean => {
-    const dateKey = date.toISOString().split("T")[0];
-    
+    const dateKey = formatDateWithoutTime(date);
+  
     // Check if any vacationDateRange matches the given date
     return vacationDates.some((vacationDateRange) => {
       const [start, end] = vacationDateRange.split("/");
-      const startDateKey = new Date(start).toISOString().split("T")[0];
-      const endDateKey = new Date(end).toISOString().split("T")[0];
-      console.log(dateKey)
+      const startDateKey = formatDateWithoutTime(new Date(start));
+      const endDateKey = formatDateWithoutTime(new Date(end));
+      console.log(dateKey);
       return dateKey >= startDateKey && dateKey <= endDateKey;
     });
   };
+  
   
 
 

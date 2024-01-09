@@ -212,7 +212,7 @@ const Calendar: React.FC = () => {
           show={showVacationModal}
           onHide={() => setShowVacationModal(false)}
           onSave={(start, end) =>
-            setVacationDates([...vacationDates, `${start}-${end}`])
+            setVacationDates([...vacationDates, `${start}/${end}`])
           }
         />
 

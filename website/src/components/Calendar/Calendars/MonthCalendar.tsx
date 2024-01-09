@@ -50,6 +50,21 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
     return !!timesMap[dateKey];
   };
 
+  const hasVacationForDate = (date: Date, vacationDates: string[]): boolean => {
+    const dateKey = date.toISOString().split("T")[0];
+    
+    // Check if any vacationDateRange matches the given date
+    return vacationDates.some((vacationDateRange) => {
+      const [start, end] = vacationDateRange.split("/");
+      const startDateKey = new Date(start).toISOString().split("T")[0];
+      const endDateKey = new Date(end).toISOString().split("T")[0];
+      console.log(dateKey)
+      return dateKey >= startDateKey && dateKey <= endDateKey;
+    });
+  };
+  
+
+
   return (
     <div>
       <table className="table table-month">
@@ -68,18 +83,27 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
           {calendarRows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((day, dayIndex) => (
-                <td className="day" key={dayIndex} onClick={() => handleDayClick(day)}>
+                <td
+                  className="day"
+                  key={dayIndex}
+                  onClick={() => handleDayClick(day)}
+                >
                   <div className="day-number">{day !== 0 ? day : ""}</div>
-                  {day !== 0 && hasDataForDate(new Date(currentYear, currentMonth, day)) ? (
+                  {day !== 0 &&
+                  hasDataForDate(new Date(currentYear, currentMonth, day)) ? (
                     <div className="blue-dot"></div>
                   ) : (
                     <div></div>
                   )}
-                  {/* {day !== 0 && hasVacationForDate(new Date(currentYear, currentMonth, day)) ? (
-                    <div className="vacation-dot"></div>
+                  {day !== 0 &&
+                  hasVacationForDate(
+                    new Date(currentYear, currentMonth, day),
+                    vacationDates
+                  ) ? (
+                    <div className="blue-dot"></div>
                   ) : (
                     <div></div>
-                  )} */}
+                  )}
                 </td>
               ))}
             </tr>
@@ -91,7 +115,9 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
           selectedDate={selectedDate}
           onSave={handleSaveTimes}
           existingTimes={
-            selectedDate ? timesMap[selectedDate.toISOString().split("T")[0]] || [] : []
+            selectedDate
+              ? timesMap[selectedDate.toISOString().split("T")[0]] || []
+              : []
           }
           onSaveTotalHours={onSaveTotalHours}
           onClose={handleClosePopup}

@@ -7,16 +7,20 @@ interface MonthCalendarProps {
   currentMonth: number;
   currentYear: number;
   onSaveTotalHours: (totalHours: number) => void;
+  vacationDates: string[];
 }
 
 const MonthCalendar: React.FC<MonthCalendarProps> = ({
   currentMonth,
   currentYear,
   onSaveTotalHours,
+  vacationDates,
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [timesMap, setTimesMap] = useState<{ [key: string]: { startTime: string; endTime: string }[] }>({});
+  const [timesMap, setTimesMap] = useState<{
+    [key: string]: { startTime: string; endTime: string }[];
+  }>({});
 
   const calendarRows = generateCalendarRows(currentYear, currentMonth);
 
@@ -71,6 +75,11 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                   ) : (
                     <div></div>
                   )}
+                  {/* {day !== 0 && hasVacationForDate(new Date(currentYear, currentMonth, day)) ? (
+                    <div className="vacation-dot"></div>
+                  ) : (
+                    <div></div>
+                  )} */}
                 </td>
               ))}
             </tr>

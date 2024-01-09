@@ -39,6 +39,8 @@ const Calendar: React.FC = () => {
   const [showVacationModal, setShowVacationModal] = useState(false);
   const [showSickDaysModal, setShowSickDaysModal] = useState(false);
 
+  const [vacationDates, setVacationDates] = useState<string[]>([]);
+
   useEffect(() => {
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 1);
@@ -121,6 +123,7 @@ const Calendar: React.FC = () => {
             currentMonth={currentMonth}
             currentYear={currentYear}
             onSaveTotalHours={handleSaveTotalHours}
+            vacationDates={vacationDates} 
           />
         );
       case "week":
@@ -143,6 +146,7 @@ const Calendar: React.FC = () => {
             currentMonth={currentMonth}
             currentYear={currentYear}
             onSaveTotalHours={handleSaveTotalHours}
+            vacationDates={vacationDates} 
           />
         );
     }
@@ -200,15 +204,18 @@ const Calendar: React.FC = () => {
       {renderCalendar()}
 
       <div className="d-flex justify-content-between">
-      <div className="">
+        <div className="">
           <VacationBtn onClick={() => setShowVacationModal(true)} />
           <SickDaysButton onClick={() => setShowSickDaysModal(true)} />
-          
         </div>
         <VacationModal
           show={showVacationModal}
           onHide={() => setShowVacationModal(false)}
+          onSave={(start, end) =>
+            setVacationDates([...vacationDates, `${start}-${end}`])
+          }
         />
+
         <SickDaysModal
           show={showSickDaysModal}
           onHide={() => setShowSickDaysModal(false)}
@@ -217,7 +224,7 @@ const Calendar: React.FC = () => {
           Gesamtstunden:{" "}
           {(
             totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0
-            ).toFixed(2)}
+          ).toFixed(2)}
           h
         </h3>
       </div>

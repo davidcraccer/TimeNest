@@ -4,6 +4,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 interface VacationModalProps {
   show: boolean;
   onHide: () => void;
+  onSave: (startDate: string, endDate: string) => void;
 }
 
 const isValidDate = (dateString: string): boolean => {
@@ -12,7 +13,7 @@ const isValidDate = (dateString: string): boolean => {
   return regex.test(dateString);
 };
 
-const VacationModal: React.FC<VacationModalProps> = ({ show, onHide }) => {
+const VacationModal: React.FC<VacationModalProps> = ({ show, onHide, onSave }) => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [startDateError, setStartDateError] = useState<string>("");
@@ -20,30 +21,33 @@ const VacationModal: React.FC<VacationModalProps> = ({ show, onHide }) => {
 
   const handleSave = () => {
     let hasError = false;
-
+  
     if (!isValidDate(startDate)) {
       setStartDateError("Invalid start date format (dd.mm.yyyy)");
       hasError = true;
     } else {
       setStartDateError("");
     }
-
+  
     if (!isValidDate(endDate)) {
       setEndDateError("Invalid end date format (dd.mm.yyyy)");
       hasError = true;
     } else {
       setEndDateError("");
     }
-
+  
     if (!hasError) {
-      // Add logic to handle saving vacation dates
-      // You can use the startDate and endDate values
-      // For example, you can pass them to a parent component or perform an API call
-      console.log("Start Date:", startDate);
-      console.log("End Date:", endDate);
+      // Convert German-formatted date strings to JavaScript date objects
+      const jsStartDate = new Date(startDate.split('.').reverse().join('-'));
+      const jsEndDate = new Date(endDate.split('.').reverse().join('-'));
+  
+      // Pass the JavaScript-formatted date objects to the parent component
+      onSave(jsStartDate.toISOString(), jsEndDate.toISOString());
+  
       onHide(); // Close the modal
     }
   };
+  
 
   return (
     <Modal show={show} onHide={onHide} centered>

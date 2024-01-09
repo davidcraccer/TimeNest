@@ -40,6 +40,7 @@ const Calendar: React.FC = () => {
   const [showSickDaysModal, setShowSickDaysModal] = useState(false);
 
   const [vacationDates, setVacationDates] = useState<string[]>([]);
+  const [sickDates, setSickDates] = useState<string[]>([]);
 
   useEffect(() => {
     const currentDate = new Date();
@@ -123,7 +124,8 @@ const Calendar: React.FC = () => {
             currentMonth={currentMonth}
             currentYear={currentYear}
             onSaveTotalHours={handleSaveTotalHours}
-            vacationDates={vacationDates} 
+            vacationDates={vacationDates}
+            sickDates={sickDates}
           />
         );
       case "week":
@@ -146,7 +148,8 @@ const Calendar: React.FC = () => {
             currentMonth={currentMonth}
             currentYear={currentYear}
             onSaveTotalHours={handleSaveTotalHours}
-            vacationDates={vacationDates} 
+            vacationDates={vacationDates}
+            sickDates={sickDates}
           />
         );
     }
@@ -219,6 +222,9 @@ const Calendar: React.FC = () => {
         <SickDaysModal
           show={showSickDaysModal}
           onHide={() => setShowSickDaysModal(false)}
+          onSave={(start, end) =>
+            setSickDates([...sickDates, `${start}/${end}`])
+          }
         />
         <h3 className="show-total-hours">
           Gesamtstunden:{" "}

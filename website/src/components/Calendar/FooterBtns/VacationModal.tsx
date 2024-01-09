@@ -37,7 +37,6 @@ const VacationModal: React.FC<VacationModalProps> = ({ show, onHide, onSave }) =
     }
   
     if (!hasError) {
-      // Convert German-formatted date strings to JavaScript date objects
       const jsStartDate = new Date(startDate.split('.').reverse().join('-'));
       const jsEndDate = new Date(endDate.split('.').reverse().join('-'));
       onSave(jsStartDate.toISOString().split("T")[0], jsEndDate.toISOString().split("T")[0]);

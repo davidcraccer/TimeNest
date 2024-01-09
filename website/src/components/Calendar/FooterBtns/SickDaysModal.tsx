@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-interface SickDaysModalProps {
+interface DateRangeModalProps {
   show: boolean;
   onHide: () => void;
+  onSave: (startDate: string, endDate: string) => void;
 }
 
 const isValidDate = (dateString: string): boolean => {
@@ -12,7 +13,7 @@ const isValidDate = (dateString: string): boolean => {
   return regex.test(dateString);
 };
 
-const SickDaysModal: React.FC<SickDaysModalProps> = ({ show, onHide }) => {
+const DateRangeModal: React.FC<DateRangeModalProps> = ({ show, onHide, onSave }) => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [startDateError, setStartDateError] = useState<string>("");
@@ -36,12 +37,11 @@ const SickDaysModal: React.FC<SickDaysModalProps> = ({ show, onHide }) => {
     }
 
     if (!hasError) {
-      // Add logic to handle saving sick days
-      // You can use the formatted startDate and endDate values
-      // For example, you can pass them to a parent component or perform an API call
-      console.log("Formatted Start Date:", startDate);
-      console.log("Formatted End Date:", endDate);
-      onHide(); // Close the modal
+      const jsStartDate = new Date(startDate.split('.').reverse().join('-'));
+      const jsEndDate = new Date(endDate.split('.').reverse().join('-'));
+      onSave(jsStartDate.toISOString().split("T")[0], jsEndDate.toISOString().split("T")[0]);
+
+      onHide();
     }
   };
 
@@ -92,4 +92,4 @@ const SickDaysModal: React.FC<SickDaysModalProps> = ({ show, onHide }) => {
   );
 };
 
-export default SickDaysModal;
+export default DateRangeModal;

@@ -8,6 +8,7 @@ interface MonthCalendarProps {
   currentYear: number;
   onSaveTotalHours: (totalHours: number) => void;
   vacationDates: string[];
+  sickDates: string[];
 }
 
 const MonthCalendar: React.FC<MonthCalendarProps> = ({
@@ -15,6 +16,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
   currentYear,
   onSaveTotalHours,
   vacationDates,
+  sickDates,
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -51,19 +53,35 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
   };
 
   const formatDateWithoutTime = (date: Date): string => {
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return date.toLocaleDateString('de-DE', options);
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    };
+    return date.toLocaleDateString("de-DE", options);
   };
-  
+
   const hasVacationForDate = (date: Date, vacationDates: string[]): boolean => {
     const dateKey = formatDateWithoutTime(date);
-  
+
     // Check if any vacationDateRange matches the given date
     return vacationDates.some((vacationDateRange) => {
       const [start, end] = vacationDateRange.split("/");
       const startDateKey = formatDateWithoutTime(new Date(start));
       const endDateKey = formatDateWithoutTime(new Date(end));
       console.log(dateKey);
+      return dateKey >= startDateKey && dateKey <= endDateKey;
+    });
+  };
+
+  const hasSickDaysForDate = (date: Date, sickDates: string[]): boolean => {
+    const dateKey = formatDateWithoutTime(date);
+
+    // Check if any sickDateRange matches the given date
+    return sickDates.some((sickDateRange) => {
+      const [start, end] = sickDateRange.split("/");
+      const startDateKey = formatDateWithoutTime(new Date(start));
+      const endDateKey = formatDateWithoutTime(new Date(end));
       return dateKey >= startDateKey && dateKey <= endDateKey;
     });
   };
@@ -95,6 +113,15 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                   {day !== 0 &&
                   hasDataForDate(new Date(currentYear, currentMonth, day)) ? (
                     <div className="work-dot"></div>
+                  ) : (
+                    <div></div>
+                  )}
+                  {day !== 0 &&
+                  hasSickDaysForDate(
+                    new Date(currentYear, currentMonth, day),
+                    sickDates
+                  ) ? (
+                    <div className="sick-dot"></div>
                   ) : (
                     <div></div>
                   )}

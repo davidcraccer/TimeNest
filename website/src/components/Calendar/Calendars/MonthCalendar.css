@@ -5,6 +5,7 @@
 
 .table-month td {
   color: rgb(32, 35, 42);
+  position: relative; /* Add relative positioning to the table cells */
 }
 
 .table-month th,
@@ -24,15 +25,13 @@
   top: 5px;
 }
 
-
 .blue-dot {
   position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(990%) translateY(-800%);
+  right: 1px;
+  top: 30px;
+  transform: translateX(-100%);
   width: 8px;
   height: 8px;
   background-color: #6EC0D8;
   border-radius: 50%;
-  
 }

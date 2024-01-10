@@ -1,6 +1,8 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Form, Button, Modal } from "react-bootstrap";
+import DataProtectionModal from "./DataProtectionModal"; // Make sure to import the DataProtectionModal component
 
 const Register = () => {
   const navigate = useNavigate();
@@ -19,6 +21,10 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [registrationSuccess, setRegistrationSuccess] =
     useState<boolean>(false);
+  const [showDataProtectionModal, setShowDataProtectionModal] =
+    useState<boolean>(false);
+  const [dataProtectionConsent, setDataProtectionConsent] =
+    useState<boolean>(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -33,8 +39,17 @@ const Register = () => {
     }
   };
 
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDataProtectionConsent(e.target.checked);
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!dataProtectionConsent) {
+      alert("Bitte stimmen Sie der Datenschutzerklärung zu.");
+      return;
+    }
 
     if (formData.password !== formData.confirmPassword) {
       setPasswordError("Die Passwörter stimmen nicht überein");
@@ -63,7 +78,7 @@ const Register = () => {
       }, 2000);
     } catch (error: any) {
       setUsernameInavailable(true);
-      console.error("Error registering user:", error.response.data.error);
+      console.error("Error registering user:", error.response?.data?.error);
     }
   };
 
@@ -76,7 +91,7 @@ const Register = () => {
         </div>
       )}
       <div
-        className="container p-4 mt-5 rounded bg-light shadow"
+        className="container p-4 my-5 rounded bg-light shadow"
         style={{ maxWidth: "400px" }}
       >
         <div className="row justify-content-center">
@@ -180,9 +195,28 @@ const Register = () => {
                   <option value="Geschäftsführung">Geschäftsführung</option>
                 </select>
               </div>
-              <button type="submit" className="btn btn-primary">
+              <Form.Check
+                type="checkbox"
+                id="dataProtectionConsent"
+                label={
+                  <>
+                    Ich habe die{" "}
+                    <span
+                      className="text-primary"
+                      onClick={() => setShowDataProtectionModal(true)}
+                      style={{ cursor: "pointer", textDecoration: "underline" }}
+                    >
+                      Datenschutzerklärung
+                    </span>{" "}
+                    gelesen und stimme zu.
+                  </>
+                }
+                onChange={handleCheckboxChange}
+                required
+              />
+              <Button type="submit" className="btn btn-primary mt-3">
                 Registrieren
-              </button>
+              </Button>
               <div className="mt-2">
                 <small className="text-muted">
                   Sie haben bereits ein Konto?{" "}
@@ -195,6 +229,11 @@ const Register = () => {
           </div>
         </div>
       </div>
+      <DataProtectionModal
+        show={showDataProtectionModal}
+        onHide={() => setShowDataProtectionModal(false)}
+        title="Datenschutzerklärung"
+      />
     </>
   );
 };

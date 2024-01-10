@@ -14,9 +14,7 @@ const Profile: React.FC<ProfileProps> = ({ handleLogout }) => {
 
   return (
     <div className="profile-container">
-      <div className="profile-picture">
-        <img src={defaultProfilePicture} alt="Profile" />
-      </div>
+        <img className="profile-picture ms-2" src={defaultProfilePicture} alt="Profile" />
       <div className="profile-details">
         <p className="user-name">{user?.fullName}</p>
         <p className="role-name">{user?.role}</p>

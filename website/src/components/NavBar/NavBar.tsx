@@ -94,7 +94,7 @@ const NavBar: React.FC = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="#chat" className="nav-link">
+                <Link to="/chat" className="nav-link">
                   Chats
                 </Link>
               </li>

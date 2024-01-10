@@ -10,6 +10,7 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import { useAuth } from "./utils/authContext";
+import Chat from "./pages/Chat/Chat";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -27,6 +28,7 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </Router>
     </div>

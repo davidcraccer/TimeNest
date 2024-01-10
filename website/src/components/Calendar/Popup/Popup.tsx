@@ -108,16 +108,16 @@ const Popup: React.FC<PopupProps> = ({
               </div>
               {index === timesState.length - 1 && (
                 <div className="d-flex align-items-center gap-1 ms-2 ">
-                  <Button className="circle-button" onClick={addTimeField}>
+                  <button className="circle-button" onClick={addTimeField}>
                     +
-                  </Button>
+                  </button>
                   {index > 0 && (
-                    <Button
+                    <button
                       className="circle-button"
                       onClick={() => setTimes(timesState.slice(0, index))}
                     >
                       -
-                    </Button>
+                    </button>
                   )}
                 </div>
               )}

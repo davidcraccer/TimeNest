@@ -53,7 +53,7 @@ const DateRangeModal: React.FC<DateRangeModalProps> = ({ show, onHide, onSave, t
       <Modal.Body>
         <Form>
           <Form.Group controlId="startDate">
-            <Form.Label>Start Date:</Form.Label>
+            <Form.Label className="mt-2">Startdatum:</Form.Label>
             <Form.Control
               type="text"
               placeholder="dd.mm.yyyy"
@@ -66,7 +66,7 @@ const DateRangeModal: React.FC<DateRangeModalProps> = ({ show, onHide, onSave, t
             <Form.Text className="text-danger">{startDateError}</Form.Text>
           </Form.Group>
           <Form.Group controlId="endDate">
-            <Form.Label>End Date:</Form.Label>
+            <Form.Label className="mt-2">Enddatum:</Form.Label>
             <Form.Control
               type="text"
               placeholder="dd.mm.yyyy"

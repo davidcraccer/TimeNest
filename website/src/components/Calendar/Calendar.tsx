@@ -216,7 +216,7 @@ const Calendar: React.FC = () => {
           onSave={(start, end) =>
             setVacationDates([...vacationDates, `${start}/${end}`])
           }
-          title="Vacation Days"
+          title="Urlaubstage"
         />
 
         <DateRangeModal
@@ -225,7 +225,7 @@ const Calendar: React.FC = () => {
           onSave={(start, end) =>
             setSickDates([...sickDates, `${start}/${end}`])
           }
-          title="Sick Days"
+          title="Krankheitstage"
         />
 
         <h3 className="show-total-hours">

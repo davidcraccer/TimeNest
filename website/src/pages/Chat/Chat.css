@@ -1,48 +1,51 @@
 /* Add these styles for better visibility */
 
 .profile {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .profile:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .profile-picture {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .profile-name {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  
-  .profile-link {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .chat-container {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .chat-box {
-    border-bottom: 1px solid #ccc;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
-  .typing-input-container {
-    padding: 10px;
-    border-top: 1px solid #ccc;
-  }
-  
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile:hover {
+  background-color: #f0f0f0;
+}
+
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.profile-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.profile-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.chat-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.chat-box {
+  border-bottom: 1px solid #ccc;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.typing-input-container {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.main-container-chat{
+  height: 80vh;
+}

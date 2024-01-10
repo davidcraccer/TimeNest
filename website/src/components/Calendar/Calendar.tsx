@@ -18,8 +18,7 @@ import DayCalendar from "./Calendars/DayCalendar";
 import ListCalendar from "./Calendars/ListCalendar";
 import SickDaysButton from "./FooterBtns/SickDaysBtn";
 import VacationBtn from "./FooterBtns/VacationBtn";
-import VacationModal from "./FooterBtns/VacationModal";
-import SickDaysModal from "./FooterBtns/SickDaysModal";
+import DateRangeModal from "./FooterBtns/DateRangeModalProps";
 
 const Calendar: React.FC = () => {
   const [currentView, setCurrentView] = useState<string>("month");
@@ -211,21 +210,24 @@ const Calendar: React.FC = () => {
           <VacationBtn onClick={() => setShowVacationModal(true)} />
           <SickDaysButton onClick={() => setShowSickDaysModal(true)} />
         </div>
-        <VacationModal
+        <DateRangeModal
           show={showVacationModal}
           onHide={() => setShowVacationModal(false)}
           onSave={(start, end) =>
             setVacationDates([...vacationDates, `${start}/${end}`])
           }
+          title="Vacation Days"
         />
 
-        <SickDaysModal
+        <DateRangeModal
           show={showSickDaysModal}
           onHide={() => setShowSickDaysModal(false)}
           onSave={(start, end) =>
             setSickDates([...sickDates, `${start}/${end}`])
           }
+          title="Sick Days"
         />
+
         <h3 className="show-total-hours">
           Gesamtstunden:{" "}
           {(

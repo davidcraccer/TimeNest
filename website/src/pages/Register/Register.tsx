@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Form, Button, Modal } from "react-bootstrap";
-import DataProtectionModal from "./DataProtectionModal"; // Make sure to import the DataProtectionModal component
+import { Form, Button } from "react-bootstrap";
+import DataProtectionModal from "./DataProtectionModal";
 
 const Register = () => {
   const navigate = useNavigate();

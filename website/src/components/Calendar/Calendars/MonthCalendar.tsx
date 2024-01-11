@@ -27,7 +27,10 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [timesMap, setTimesMap] = useState<{
+  const [workTimesMap, setWorkTimesMap] = useState<{
+    [key: string]: { startTime: string; endTime: string }[];
+  }>({});
+  const [overtimeMap, setOvertimeMap] = useState<{
     [key: string]: { startTime: string; endTime: string }[];
   }>({});
 
@@ -45,8 +48,8 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
     const dateKey = selectedDate?.toISOString().split("T")[0];
 
     if (dateKey) {
-      setTimesMap((prevTimesMap) => ({
-        ...prevTimesMap,
+      setWorkTimesMap((prevWorkTimesMap) => ({
+        ...prevWorkTimesMap,
         [dateKey]: workTime,
       }));
     }
@@ -56,8 +59,8 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
     const dateKey = selectedDate?.toISOString().split("T")[0];
 
     if (dateKey) {
-      setTimesMap((prevTimesMap) => ({
-        ...prevTimesMap,
+      setOvertimeMap((prevOvertimeMap) => ({
+        ...prevOvertimeMap,
         [dateKey]: overtime,
       }));
     }
@@ -92,7 +95,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                       renderDot(
                         hasDataForDate(
                           new Date(currentYear, currentMonth, day),
-                          timesMap
+                          { ...workTimesMap, ...overtimeMap }
                         ),
                         "work-dot"
                       )}
@@ -128,12 +131,12 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
           onSaveOvertimeTotalHours={onSaveOvertimeTotalHours}
           existingWorkTime={
             selectedDate
-              ? timesMap[selectedDate.toISOString().split("T")[0]] || []
+              ? workTimesMap[selectedDate.toISOString().split("T")[0]] || []
               : []
           }
           existingOvertime={
             selectedDate
-              ? timesMap[selectedDate.toISOString().split("T")[0]] || []
+              ? overtimeMap[selectedDate.toISOString().split("T")[0]] || []
               : []
           }
           onClose={handleClosePopup}

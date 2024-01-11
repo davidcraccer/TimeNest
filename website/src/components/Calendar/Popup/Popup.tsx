@@ -23,23 +23,15 @@ const Popup: React.FC<PopupProps> = ({
   existingOvertime,
   onClose,
 }) => {
-  const [workTimeTotalHours, setWorkTimeTotalHours] = useState<number | null>(
-    null
-  );
-  const [workTime, setWorkTime] = useState<
-    { startTime: string; endTime: string }[]
-  >(
+  const [workTimeTotalHours, setWorkTimeTotalHours] = useState<number | null>(null);
+  const [workTime, setWorkTime] = useState<{ startTime: string; endTime: string }[]>(
     existingWorkTime.length > 0
       ? existingWorkTime
       : [{ startTime: "", endTime: "" }]
   );
 
-  const [overtimeTotalHours, setOvertimeTotalHours] = useState<number | null>(
-    null
-  );
-  const [overtime, setOvertime] = useState<
-    { startTime: string; endTime: string }[]
-  >(
+  const [overtimeTotalHours, setOvertimeTotalHours] = useState<number | null>(null);
+  const [overtime, setOvertime] = useState<{ startTime: string; endTime: string }[]>(
     existingOvertime.length > 0
       ? existingOvertime
       : [{ startTime: "", endTime: "" }]
@@ -84,46 +76,45 @@ const Popup: React.FC<PopupProps> = ({
     const isWorkTimeValid = workTime.some(
       (time) => time.startTime && time.endTime
     );
-
+  
     const isOvertimeValid = overtime.some(
       (time) => time.startTime && time.endTime
     );
-
+  
     if (!isWorkTimeValid && !isOvertimeValid) {
       onClose();
       return;
     }
-    onSaveWorkTime(workTime);
-    onSaveWorkTimeTotalHours(workTimeTotalHours || 0);
-    onSaveOvertime(overtime);
-    onSaveOvertimeTotalHours(overtimeTotalHours || 0);
+  
+    if (isWorkTimeValid) {
+      onSaveWorkTime(workTime);
+      onSaveWorkTimeTotalHours(workTimeTotalHours || 0);
+    }
+  
+    if (isOvertimeValid) {
+      onSaveOvertime(overtime);
+      onSaveOvertimeTotalHours(overtimeTotalHours || 0);
+    }
+  
     onClose();
   };
+  
 
   useEffect(() => {
-    const workTimeTotal = workTime.reduce((acc, time) => {
-      if (time.startTime && time.endTime) {
-        const start = new Date(`1970-01-01T${time.startTime}`);
-        const end = new Date(`1970-01-01T${time.endTime}`);
-        const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-        return acc + hours;
-      }
-      return acc;
-    }, 0);
+    const calculateTotalHours = (times: { startTime: string; endTime: string }[]) => {
+      return times.reduce((acc, time) => {
+        if (time.startTime && time.endTime) {
+          const start = new Date(`1970-01-01T${time.startTime}`);
+          const end = new Date(`1970-01-01T${time.endTime}`);
+          const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+          return acc + hours;
+        }
+        return acc;
+      }, 0);
+    };
 
-    setWorkTimeTotalHours(workTimeTotal);
-
-    const overtimeTotal = overtime.reduce((acc, time) => {
-      if (time.startTime && time.endTime) {
-        const start = new Date(`1970-01-01T${time.startTime}`);
-        const end = new Date(`1970-01-01T${time.endTime}`);
-        const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-        return acc + hours;
-      }
-      return acc;
-    }, 0);
-
-    setOvertimeTotalHours(overtimeTotal);
+    setWorkTimeTotalHours(calculateTotalHours(workTime));
+    setOvertimeTotalHours(calculateTotalHours(overtime));
   }, [workTime, overtime]);
 
   return (

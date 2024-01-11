@@ -186,8 +186,8 @@ const Register = () => {
                     Rolle auswählen
                   </option>
                   <option value="Mitarbeiter">Mitarbeiter</option>
-                  <option value="Aushilfs/Studentenkräfte">
-                    Aushilfs/Studentenkräfte
+                  <option value="Aushilfskraft">
+                    Aushilfskraft
                   </option>
                   <option value="Niederlassungsleiter">
                     Niederlassungsleiter

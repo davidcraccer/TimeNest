@@ -1,47 +1,43 @@
 export const notifications = [
-    {
-      user: "David",
-      objective:
-        "hat Ihnen erlaubt, Urlaub zu nehmen. Haben Sie einen schönen Urlaub!",
-    },
-    {
-      user: "Lemon",
-      objective:
-        "hat Ihren Urlaubsantrag abgelehnt. Überprüfen Sie die App für weitere Details und überlegen Sie eine erneute Einreichung.",
-    },
-    {
-      user: "Ihr Manager",
-      objective:
-        "hat Ihre Überstunden genehmigt. Diese Stunden werden Ihrem Gehalt hinzugefügt.",
-    },
-    {
-      user: "Mitarbeiter",
-      objective:
-        "Sie haben erfolgreich Ihre Krankmeldung gemeldet. Eine E-Mail wurde automatisch generiert und an Ihre Krankenversicherung gesendet zwecks weiterer Bearbeitung.",
-    },
-    {
-      user: "HR",
-      objective:
-        "Ein Mitarbeiter hat sich krank gemeldet. Bitte beachten Sie dies für HR-Aufzeichnungen und Abrechnungszwecke.",
-    },
-    {
-      user: "Vorgesetzter",
-      objective:
-        "Ein Mitarbeiter in Ihrem Team hat sich krank gemeldet. Bitte beachten Sie mögliche unmittelbare arbeitsbezogene Auswirkungen und planen Sie notwendige Anpassungen.",
-    },
-    {
-      user: "Vorgesetzter",
-      objective:
-        "Einer Ihrer Teammitglieder hat Überstunden angesammelt. Bitte überprüfen Sie dies und nehmen Sie bei Bedarf Anpassungen vor.",
-    },
-    {
-      user: "HR",
-      objective:
-        "Ein Mitarbeiter ist krankgeschrieben. Bitte beachten Sie die mögliche Lohnfortzahlung während dieser Zeit für die Lohnabrechnung.",
-    },
-    {
-      user: "Personalabteilung",
-      objective:
-        "hat Sie über einen neuen Mitarbeiter, John Doe, informiert, der dem Unternehmen beigetreten ist. Bitte heißen Sie ihn willkommen!",
-    },
-  ];
+  {
+    sender: "System",
+    receiver: ["Mitarbeiter", "Aushilfskraft"],
+    message:
+      "Sie haben erfolgreich Ihre Krankmeldung gemeldet. Eine E-Mail wurde automatisch generiert und an Ihre Krankenversicherung gesendet zwecks weiterer Bearbeitung.",
+  },
+  {
+    sender: "System",
+    receiver: ["Mitarbeiter", "Aushilfskraft"],
+    message: "Ihr Urlaubsantrag wurde erfolgreich genehmigt.",
+  },
+  {
+    sender: "System",
+    receiver: ["Mitarbeiter", "Aushilfskraft"],
+    message: "Ihre Überstundenanfrage wurde erfolgreich genehmigt.",
+  },
+  {
+    sender: "System",
+    receiver: ["Mitarbeiter", "Aushilfskraft"],
+    message: "Ihre Überstundenanfrage wurde leider abgelehnt. Überprüfen Sie die App für weitere Details und überlegen Sie eine erneute Einreichung.",
+  },
+  {
+    sender: "System",
+    receiver: ["Mitarbeiter", "Aushilfskraft"],
+    message: "Ihr Urlaubsantrag wurde leider abgelehnt. Überprüfen Sie die App für weitere Details und überlegen Sie eine erneute Einreichung.",
+  },
+  {
+    sender: "Mitarbeiter",
+    receiver: ["Vorgesetzte", "Niederlassungsleiter", "Personalabteilung"],
+    message: "hat sich krankgemeldet. Bitte beachten Sie dies für HR-Aufzeichnungen und Abrechnungszwecke.",
+  },
+  {
+    sender: "Mitarbeiter",
+    receiver: ["Vorgesetzte", "Niederlassungsleiter", "Personalabteilung"],
+    message: "hat einen Urlaubsantrag gestellt. Bitte überprüfen Sie und nehmen Sie entsprechende Maßnahmen.",
+  },
+  {
+    sender: "Mitarbeiter",
+    receiver: ["Vorgesetzte", "Niederlassungsleiter", "Personalabteilung"],
+    message: "hat seine Arbeitszeit erfasst. Überprüfen Sie die Informationen für Abrechnungszwecke.",
+  },
+];

@@ -2,7 +2,11 @@ import React from "react";
 import "./Notification.css";
 
 interface NotificationProps {
-  notifications: { user: string; objective: string }[];
+  notifications: {
+    sender: string;
+    receiver: string[];
+    message: string;
+  }[];
 }
 
 const Notification: React.FC<NotificationProps> = ({ notifications }) => {
@@ -12,7 +16,7 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
       {notifications.map((notification, index) => (
         <div className="notification-item" key={index}>
           <p>
-            <strong>{notification.user}:</strong> {notification.objective}
+            <strong>{notification.sender}:</strong> {notification.message}
           </p>
         </div>
       ))}

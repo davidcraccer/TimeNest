@@ -23,21 +23,39 @@ const Popup: React.FC<PopupProps> = ({
   existingOvertime,
   onClose,
 }) => {
-  const [workTimeTotalHours, setWorkTimeTotalHours] = useState<number | null>(null);
-  const [workTime, setWorkTime] = useState<{ startTime: string; endTime: string }[]>(
-    existingWorkTime.length > 0 ? existingWorkTime : [{ startTime: "", endTime: "" }]
+  const [workTimeTotalHours, setWorkTimeTotalHours] = useState<number | null>(
+    null
+  );
+  const [workTime, setWorkTime] = useState<
+    { startTime: string; endTime: string }[]
+  >(
+    existingWorkTime.length > 0
+      ? existingWorkTime
+      : [{ startTime: "", endTime: "" }]
   );
 
-  const [overtimeTotalHours, setOvertimeTotalHours] = useState<number | null>(null);
-  const [overtime, setOvertime] = useState<{ startTime: string; endTime: string }[]>(
-    existingOvertime.length > 0 ? existingOvertime : [{ startTime: "", endTime: "" }]
+  const [overtimeTotalHours, setOvertimeTotalHours] = useState<number | null>(
+    null
+  );
+  const [overtime, setOvertime] = useState<
+    { startTime: string; endTime: string }[]
+  >(
+    existingOvertime.length > 0
+      ? existingOvertime
+      : [{ startTime: "", endTime: "" }]
   );
 
   const addTimeField = (isWorkTime: boolean) => {
     if (isWorkTime) {
-      setWorkTime((prevWorkTime) => [...prevWorkTime, { startTime: "", endTime: "" }]);
+      setWorkTime((prevWorkTime) => [
+        ...prevWorkTime,
+        { startTime: "", endTime: "" },
+      ]);
     } else {
-      setOvertime((prevOvertime) => [...prevOvertime, { startTime: "", endTime: "" }]);
+      setOvertime((prevOvertime) => [
+        ...prevOvertime,
+        { startTime: "", endTime: "" },
+      ]);
     }
   };
 
@@ -99,13 +117,12 @@ const Popup: React.FC<PopupProps> = ({
   return (
     <Modal show={true} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Time Tracking</Modal.Title>
+        <Modal.Title>Arbeitszeit Erfassung</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Date: {selectedDate ? selectedDate.toDateString() : ""}</p>
+        <p>Datum: {selectedDate ? selectedDate.toDateString() : ""}</p>
 
-        {/* Work Time Section */}
-        <label style={{ marginRight: "8px" }}>Work Time: </label>
+        <label>Arbeitszeit: </label>
         <div className="d-flex flex-wrap">
           {workTime.map((time, index) => (
             <div key={index} className="d-flex me-2">
@@ -135,7 +152,10 @@ const Popup: React.FC<PopupProps> = ({
 
               {index === workTime.length - 1 && (
                 <div className="d-flex align-items-center gap-1 ms-2 ">
-                  <button className="circle-button" onClick={() => addTimeField(true)}>
+                  <button
+                    className="circle-button"
+                    onClick={() => addTimeField(true)}
+                  >
                     +
                   </button>
                   {index > 0 && (
@@ -152,13 +172,11 @@ const Popup: React.FC<PopupProps> = ({
           ))}
         </div>
 
-        {/* Work Time Total Hours */}
-        {workTimeTotalHours !== null && (
-          <p>Total Work Time: {workTimeTotalHours.toFixed(2)}h</p>
-        )}
+        {workTimeTotalHours ? (
+          <p>Arbeitszeit: {workTimeTotalHours.toFixed(2)}h</p>
+        ) : null}
 
-        {/* Overtime Section */}
-        <label style={{ marginRight: "8px" }}>Overtime: </label>
+        <label className="mt-2">Überstunden: </label>
         <div className="d-flex flex-wrap">
           {overtime.map((time, index) => (
             <div key={index} className="d-flex me-2">
@@ -168,7 +186,12 @@ const Popup: React.FC<PopupProps> = ({
                     type="time"
                     value={time.startTime}
                     onChange={(e) =>
-                      handleTimeChange(index, "startTime", e.target.value, false)
+                      handleTimeChange(
+                        index,
+                        "startTime",
+                        e.target.value,
+                        false
+                      )
                     }
                   />
                 </Form.Group>
@@ -188,7 +211,10 @@ const Popup: React.FC<PopupProps> = ({
 
               {index === overtime.length - 1 && (
                 <div className="d-flex align-items-center gap-1 ms-2">
-                  <button className="circle-button" onClick={() => addTimeField(false)}>
+                  <button
+                    className="circle-button"
+                    onClick={() => addTimeField(false)}
+                  >
                     +
                   </button>
                   {index > 0 && (
@@ -204,13 +230,16 @@ const Popup: React.FC<PopupProps> = ({
             </div>
           ))}
         </div>
+        {overtimeTotalHours ? (
+          <p>Überstunden: {overtimeTotalHours.toFixed(2)}h</p>
+        ) : null}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSave}>
-          Save
+          Speichern
         </Button>
         <Button variant="secondary" onClick={onClose}>
-          Close
+          Schließen
         </Button>
       </Modal.Footer>
     </Modal>

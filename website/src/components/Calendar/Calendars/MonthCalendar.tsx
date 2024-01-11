@@ -11,7 +11,8 @@ import {
 interface MonthCalendarProps {
   currentMonth: number;
   currentYear: number;
-  onSaveTotalHours: (totalHours: number) => void;
+  onSaveWorkTimeTotalHours: (totalHours: number) => void;
+  onSaveOvertimeTotalHours: (totalHours: number) => void;
   vacationDates: string[];
   sickDates: string[];
 }
@@ -19,7 +20,8 @@ interface MonthCalendarProps {
 const MonthCalendar: React.FC<MonthCalendarProps> = ({
   currentMonth,
   currentYear,
-  onSaveTotalHours,
+  onSaveWorkTimeTotalHours,
+  onSaveOvertimeTotalHours,
   vacationDates,
   sickDates,
 }) => {
@@ -39,13 +41,24 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
     setShowPopup(false);
   };
 
-  const handleSaveTimes = (times: { startTime: string; endTime: string }[]) => {
+  const handleSaveWorkTime = (workTime: { startTime: string; endTime: string }[]) => {
     const dateKey = selectedDate?.toISOString().split("T")[0];
 
     if (dateKey) {
       setTimesMap((prevTimesMap) => ({
         ...prevTimesMap,
-        [dateKey]: times,
+        [dateKey]: workTime,
+      }));
+    }
+  };
+
+  const handleSaveOvertime = (overtime: { startTime: string; endTime: string }[]) => {
+    const dateKey = selectedDate?.toISOString().split("T")[0];
+
+    if (dateKey) {
+      setTimesMap((prevTimesMap) => ({
+        ...prevTimesMap,
+        [dateKey]: overtime,
       }));
     }
   };
@@ -109,13 +122,20 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
       {showPopup && (
         <Popup
           selectedDate={selectedDate}
-          onSave={handleSaveTimes}
-          existingTimes={
+          onSaveWorkTime={handleSaveWorkTime}
+          onSaveWorkTimeTotalHours={onSaveWorkTimeTotalHours}
+          onSaveOvertime={handleSaveOvertime}
+          onSaveOvertimeTotalHours={onSaveOvertimeTotalHours}
+          existingWorkTime={
             selectedDate
               ? timesMap[selectedDate.toISOString().split("T")[0]] || []
               : []
           }
-          onSaveTotalHours={onSaveTotalHours}
+          existingOvertime={
+            selectedDate
+              ? timesMap[selectedDate.toISOString().split("T")[0]] || []
+              : []
+          }
           onClose={handleClosePopup}
         />
       )}

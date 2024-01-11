@@ -4,117 +4,144 @@ import "./Popup.css";
 
 interface PopupProps {
   selectedDate: Date | null;
-  onSave: (times: { startTime: string; endTime: string }[]) => void;
-  onSaveTotalHours: (totalHours: number) => void;
-  existingTimes: { startTime: string; endTime: string }[];
+  onSaveWorkTime: (workTime: { startTime: string; endTime: string }[]) => void;
+  onSaveWorkTimeTotalHours: (totalHours: number) => void;
+  onSaveOvertime: (overtime: { startTime: string; endTime: string }[]) => void;
+  onSaveOvertimeTotalHours: (totalHours: number) => void;
+  existingWorkTime: { startTime: string; endTime: string }[];
+  existingOvertime: { startTime: string; endTime: string }[];
   onClose: () => void;
 }
 
 const Popup: React.FC<PopupProps> = ({
   selectedDate,
-  onSave,
-  onSaveTotalHours,
-  existingTimes,
+  onSaveWorkTime,
+  onSaveWorkTimeTotalHours,
+  onSaveOvertime,
+  onSaveOvertimeTotalHours,
+  existingWorkTime,
+  existingOvertime,
   onClose,
 }) => {
-  // State to track the total hours calculated from entered times
-  const [totalHours, setTotalHours] = useState<number | null>(null);
-
-  // State to manage the array of entered times
-  const [timesState, setTimes] = useState<
-    { startTime: string; endTime: string }[]
-  >(
-    // Init with existing times or a single set of empty values
-    existingTimes.length > 0 ? existingTimes : [{ startTime: "", endTime: "" }]
+  const [workTimeTotalHours, setWorkTimeTotalHours] = useState<number | null>(null);
+  const [workTime, setWorkTime] = useState<{ startTime: string; endTime: string }[]>(
+    existingWorkTime.length > 0 ? existingWorkTime : [{ startTime: "", endTime: "" }]
   );
 
-  // Fn to add a new set of empty time fields
-  const addTimeField = () => {
-    setTimes((prevTimes) => [...prevTimes, { startTime: "", endTime: "" }]);
+  const [overtimeTotalHours, setOvertimeTotalHours] = useState<number | null>(null);
+  const [overtime, setOvertime] = useState<{ startTime: string; endTime: string }[]>(
+    existingOvertime.length > 0 ? existingOvertime : [{ startTime: "", endTime: "" }]
+  );
+
+  const addTimeField = (isWorkTime: boolean) => {
+    if (isWorkTime) {
+      setWorkTime((prevWorkTime) => [...prevWorkTime, { startTime: "", endTime: "" }]);
+    } else {
+      setOvertime((prevOvertime) => [...prevOvertime, { startTime: "", endTime: "" }]);
+    }
   };
 
-  // Fn to handle changes in the start or end time fields
   const handleTimeChange = (
     index: number,
     field: "startTime" | "endTime",
-    value: string
+    value: string,
+    isWorkTime: boolean
   ) => {
-    setTimes((prevTimes) => {
-      // Create a new array to avoid mutating the state directly
-      const newTimes = [...prevTimes];
-      newTimes[index][field] = value; // Update the specific time field
-      return newTimes;
-    });
+    if (isWorkTime) {
+      setWorkTime((prevWorkTime) => {
+        const newWorkTime = [...prevWorkTime];
+        newWorkTime[index][field] = value;
+        return newWorkTime;
+      });
+    } else {
+      setOvertime((prevOvertime) => {
+        const newOvertime = [...prevOvertime];
+        newOvertime[index][field] = value;
+        return newOvertime;
+      });
+    }
   };
 
-  // Fn to handle saving entered times and close the Popup
   const handleSave = () => {
-    onSave(timesState);
-    onSaveTotalHours(totalHours || 0);
+    onSaveWorkTime(workTime);
+    onSaveWorkTimeTotalHours(workTimeTotalHours || 0);
+    onSaveOvertime(overtime);
+    onSaveOvertimeTotalHours(overtimeTotalHours || 0);
     onClose();
   };
 
-  // Effect to recalculate total hours whenever timesState changes
   useEffect(() => {
-    const total = timesState.reduce((acc, time) => {
+    const workTimeTotal = workTime.reduce((acc, time) => {
       if (time.startTime && time.endTime) {
-        // Convert start and end times to Date objects
         const start = new Date(`1970-01-01T${time.startTime}`);
         const end = new Date(`1970-01-01T${time.endTime}`);
-        // Calculate hours and add to the accumulator
         const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
         return acc + hours;
       }
       return acc;
     }, 0);
 
-    setTotalHours(total);
-  }, [timesState]);
+    setWorkTimeTotalHours(workTimeTotal);
+
+    const overtimeTotal = overtime.reduce((acc, time) => {
+      if (time.startTime && time.endTime) {
+        const start = new Date(`1970-01-01T${time.startTime}`);
+        const end = new Date(`1970-01-01T${time.endTime}`);
+        const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+        return acc + hours;
+      }
+      return acc;
+    }, 0);
+
+    setOvertimeTotalHours(overtimeTotal);
+  }, [workTime, overtime]);
 
   return (
     <Modal show={true} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Arbeitszeit erfassen</Modal.Title>
+        <Modal.Title>Time Tracking</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Datum: {selectedDate ? selectedDate.toDateString() : ""}</p>
+        <p>Date: {selectedDate ? selectedDate.toDateString() : ""}</p>
 
-        <label style={{ marginRight: "8px" }}>Arbeitszeit: </label>
+        {/* Work Time Section */}
+        <label style={{ marginRight: "8px" }}>Work Time: </label>
         <div className="d-flex flex-wrap">
-          {timesState.map((time, index) => (
+          {workTime.map((time, index) => (
             <div key={index} className="d-flex me-2">
               <div className="mr-2">
-                <Form.Group controlId={`startTime-${index}`}>
+                <Form.Group controlId={`workTimeStartTime-${index}`}>
                   <Form.Control
                     type="time"
                     value={time.startTime}
                     onChange={(e) =>
-                      handleTimeChange(index, "startTime", e.target.value)
+                      handleTimeChange(index, "startTime", e.target.value, true)
                     }
                   />
                 </Form.Group>
               </div>
 
               <div className="mr-2">
-                <Form.Group controlId={`endTime-${index}`}>
+                <Form.Group controlId={`workTimeEndTime-${index}`}>
                   <Form.Control
                     type="time"
                     value={time.endTime}
                     onChange={(e) =>
-                      handleTimeChange(index, "endTime", e.target.value)
+                      handleTimeChange(index, "endTime", e.target.value, true)
                     }
                   />
                 </Form.Group>
               </div>
-              {index === timesState.length - 1 && (
+
+              {index === workTime.length - 1 && (
                 <div className="d-flex align-items-center gap-1 ms-2 ">
-                  <button className="circle-button" onClick={addTimeField}>
+                  <button className="circle-button" onClick={() => addTimeField(true)}>
                     +
                   </button>
                   {index > 0 && (
                     <button
                       className="circle-button"
-                      onClick={() => setTimes(timesState.slice(0, index))}
+                      onClick={() => setWorkTime(workTime.slice(0, index))}
                     >
                       -
                     </button>
@@ -125,14 +152,65 @@ const Popup: React.FC<PopupProps> = ({
           ))}
         </div>
 
-        {totalHours !== null && <p>Gesamt: {totalHours.toFixed(2)}h</p>}
+        {/* Work Time Total Hours */}
+        {workTimeTotalHours !== null && (
+          <p>Total Work Time: {workTimeTotalHours.toFixed(2)}h</p>
+        )}
+
+        {/* Overtime Section */}
+        <label style={{ marginRight: "8px" }}>Overtime: </label>
+        <div className="d-flex flex-wrap">
+          {overtime.map((time, index) => (
+            <div key={index} className="d-flex me-2">
+              <div className="mr-2">
+                <Form.Group controlId={`overtimeStartTime-${index}`}>
+                  <Form.Control
+                    type="time"
+                    value={time.startTime}
+                    onChange={(e) =>
+                      handleTimeChange(index, "startTime", e.target.value, false)
+                    }
+                  />
+                </Form.Group>
+              </div>
+
+              <div className="mr-2">
+                <Form.Group controlId={`overtimeEndTime-${index}`}>
+                  <Form.Control
+                    type="time"
+                    value={time.endTime}
+                    onChange={(e) =>
+                      handleTimeChange(index, "endTime", e.target.value, false)
+                    }
+                  />
+                </Form.Group>
+              </div>
+
+              {index === overtime.length - 1 && (
+                <div className="d-flex align-items-center gap-1 ms-2">
+                  <button className="circle-button" onClick={() => addTimeField(false)}>
+                    +
+                  </button>
+                  {index > 0 && (
+                    <button
+                      className="circle-button"
+                      onClick={() => setOvertime(overtime.slice(0, index))}
+                    >
+                      -
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSave}>
-          Speichern
+          Save
         </Button>
         <Button variant="secondary" onClick={onClose}>
-          Schließen
+          Close
         </Button>
       </Modal.Footer>
     </Modal>

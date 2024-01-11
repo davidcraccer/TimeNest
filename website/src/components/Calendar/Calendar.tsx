@@ -31,9 +31,12 @@ const Calendar: React.FC = () => {
   const [currentDayOfWeekTracker, setCurrentDayOfWeekTracker] =
     useState<number>(new Date().getDay() - 2);
   const [formattedDate, setFormattedDate] = useState<string>("");
-  const [totalHoursMap, setTotalHoursMap] = useState<{ [key: string]: number }>(
-    {}
-  );
+  const [totalWorkTimeMap, setTotalWorkTimeMap] = useState<{
+    [key: string]: number;
+  }>({});
+  const [totalOvertimeMap, setTotalOvertimeMap] = useState<{
+    [key: string]: number;
+  }>({});
 
   const [showVacationModal, setShowVacationModal] = useState(false);
   const [showSickDaysModal, setShowSickDaysModal] = useState(false);
@@ -59,23 +62,43 @@ const Calendar: React.FC = () => {
     setFormattedDate(formattedDateString);
   }, [currentDayOfWeekTracker]);
 
-  // Function to handle saving total hours for the current month
-  const handleSaveTotalHours = (totalHours: number) => {
+  // Function to handle saving total work time for the current month
+  const handleSaveWorkTimeTotalHours = (totalHours: number) => {
     // Use the formatted month-year string as the key
     const key = `${monthNames[currentMonth]}-${currentYear}`;
 
-    setTotalHoursMap((prevMap) => {
-      const newTotalHoursMap = { ...prevMap };
+    setTotalWorkTimeMap((prevMap) => {
+      const newTotalWorkTimeMap = { ...prevMap };
 
-      // Accumulate total hours if the key already exists
-      if (newTotalHoursMap[key]) {
-        newTotalHoursMap[key] += totalHours;
+      // Accumulate total work time if the key already exists
+      if (newTotalWorkTimeMap[key]) {
+        newTotalWorkTimeMap[key] += totalHours;
       } else {
-        // Set total hours if the key doesn't exist
-        newTotalHoursMap[key] = totalHours;
+        // Set total work time if the key doesn't exist
+        newTotalWorkTimeMap[key] = totalHours;
       }
 
-      return newTotalHoursMap;
+      return newTotalWorkTimeMap;
+    });
+  };
+
+  // Function to handle saving total overtime for the current month
+  const handleSaveOvertimeTotalHours = (totalHours: number) => {
+    // Use the formatted month-year string as the key
+    const key = `${monthNames[currentMonth]}-${currentYear}`;
+
+    setTotalOvertimeMap((prevMap) => {
+      const newTotalOvertimeMap = { ...prevMap };
+
+      // Accumulate total overtime if the key already exists
+      if (newTotalOvertimeMap[key]) {
+        newTotalOvertimeMap[key] += totalHours;
+      } else {
+        // Set total overtime if the key doesn't exist
+        newTotalOvertimeMap[key] = totalHours;
+      }
+
+      return newTotalOvertimeMap;
     });
   };
 
@@ -122,7 +145,8 @@ const Calendar: React.FC = () => {
           <MonthCalendar
             currentMonth={currentMonth}
             currentYear={currentYear}
-            onSaveTotalHours={handleSaveTotalHours}
+            onSaveWorkTimeTotalHours={handleSaveWorkTimeTotalHours}
+            onSaveOvertimeTotalHours={handleSaveOvertimeTotalHours}
             vacationDates={vacationDates}
             sickDates={sickDates}
           />
@@ -146,7 +170,8 @@ const Calendar: React.FC = () => {
           <MonthCalendar
             currentMonth={currentMonth}
             currentYear={currentYear}
-            onSaveTotalHours={handleSaveTotalHours}
+            onSaveWorkTimeTotalHours={handleSaveWorkTimeTotalHours}
+            onSaveOvertimeTotalHours={handleSaveOvertimeTotalHours}
             vacationDates={vacationDates}
             sickDates={sickDates}
           />
@@ -227,14 +252,24 @@ const Calendar: React.FC = () => {
           }
           title="Krankheitstage"
         />
-
-        <h3 className="show-total-hours">
-          Gesamtstunden:{" "}
-          {(
-            totalHoursMap[`${monthNames[currentMonth]}-${currentYear}`] || 0
-          ).toFixed(2)}
-          h
-        </h3>
+        <div>
+          <h3 className="show-total-hours worktime">
+            Arbeitsstunden:{" "}
+            {(
+              totalWorkTimeMap[`${monthNames[currentMonth]}-${currentYear}`] ||
+              0
+            ).toFixed(2)}
+            h
+          </h3>
+          <h3 className="show-total-hours overtime">
+            Überstunden:{" "}
+            {(
+              totalOvertimeMap[`${monthNames[currentMonth]}-${currentYear}`] ||
+              0
+            ).toFixed(2)}
+            h
+          </h3>
+        </div>
       </div>
     </div>
   );

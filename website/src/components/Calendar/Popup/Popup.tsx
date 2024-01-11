@@ -81,6 +81,18 @@ const Popup: React.FC<PopupProps> = ({
   };
 
   const handleSave = () => {
+    const isWorkTimeValid = workTime.some(
+      (time) => time.startTime && time.endTime
+    );
+
+    const isOvertimeValid = overtime.some(
+      (time) => time.startTime && time.endTime
+    );
+
+    if (!isWorkTimeValid && !isOvertimeValid) {
+      onClose();
+      return;
+    }
     onSaveWorkTime(workTime);
     onSaveWorkTimeTotalHours(workTimeTotalHours || 0);
     onSaveOvertime(overtime);

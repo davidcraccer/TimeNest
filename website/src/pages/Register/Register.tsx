@@ -16,9 +16,13 @@ const Register = () => {
     university: "",
   });
 
+  const [usernameError, setUsernameError] = useState<string | null>(null);
   const [usernameInavailable, setUsernameInavailable] =
     useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordLengthError, setPasswordLengthError] = useState<string | null>(
+    null
+  );
   const [registrationSuccess, setRegistrationSuccess] =
     useState<boolean>(false);
   const [showDataProtectionModal, setShowDataProtectionModal] =
@@ -29,18 +33,41 @@ const Register = () => {
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    const { id, value } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value,
+      [id]: value,
     });
 
-    if (passwordError) {
+    if (id === "password") {
+      if (value.length < 7) {
+        setPasswordLengthError(
+          "Das Passwort muss mindestens 7 Zeichen lang sein"
+        );
+      } else {
+        setPasswordLengthError(null);
+      }
+    }
+
+    if (id === "username") {
+      if (value.length < 7) {
+        setUsernameError(
+          "Der Benutzername muss mindestens 7 Zeichen lang sein"
+        );
+      } else {
+        setUsernameError(null);
+      }
+
+      if (value.length > 0) {
+        // Reset the username availability error if the user is typing
+        setUsernameInavailable(false);
+      }
+    }
+
+    if (id === "password" || id === "confirmPassword") {
       setPasswordError(null);
     }
-  };
-
-  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDataProtectionConsent(e.target.checked);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -51,11 +78,18 @@ const Register = () => {
       return;
     }
 
+    // Check username length before submitting
+    if (formData.username.length < 7) {
+      setUsernameError("Der Benutzername muss mindestens 7 Zeichen lang sein");
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordError("Die Passwörter stimmen nicht überein");
       return;
     }
 
+    setUsernameError(null);
     setPasswordError(null);
 
     const { username, fullName, password, role, university } = formData;
@@ -79,6 +113,10 @@ const Register = () => {
       setUsernameInavailable(true);
       console.error("Error registering user:", error.response?.data?.error);
     }
+  };
+
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDataProtectionConsent(e.target.checked);
   };
 
   return (
@@ -115,6 +153,9 @@ const Register = () => {
                     Benutzername bereits vergeben.
                   </div>
                 )}
+                {usernameError && (
+                  <div className="invalid-feedback">{usernameError}</div>
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="fullName" className="form-label">
@@ -135,12 +176,15 @@ const Register = () => {
                 <input
                   type="password"
                   className={`form-control ${
-                    passwordError ? "is-invalid" : ""
+                    passwordLengthError ? "is-invalid" : ""
                   }`}
                   id="password"
                   onChange={handleChange}
                   required
                 />
+                {passwordLengthError && (
+                  <div className="invalid-feedback">{passwordLengthError}</div>
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="confirmPassword" className="form-label">
@@ -185,12 +229,8 @@ const Register = () => {
                     Rolle auswählen
                   </option>
                   <option value="Mitarbeiter">Mitarbeiter</option>
-                  <option value="Aushilfskraft">
-                    Aushilfskraft
-                  </option>
-                  <option value="Personalabteilung">
-                    Personalabteilung
-                  </option>
+                  <option value="Aushilfskraft">Aushilfskraft</option>
+                  <option value="Personalabteilung">Personalabteilung</option>
                   <option value="Niederlassungsleiter">
                     Niederlassungsleiter
                   </option>

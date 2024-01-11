@@ -24,16 +24,13 @@ const NavBar: React.FC = () => {
   };
 
   const handleLogout = () => {
-    // Close the profile component
     setShowProfile(false);
   };
 
-  // Add a ref to the navbar element
   const navbarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleDocumentClick = (event: MouseEvent) => {
-      // Check if the click occurred outside the navbar, notification, and profile elements
       if (
         navbarRef.current &&
         !navbarRef.current.contains(event.target as Node) &&
@@ -44,10 +41,8 @@ const NavBar: React.FC = () => {
       }
     };
 
-    // Add click event listener to the document
     document.addEventListener("click", handleDocumentClick);
 
-    // Remove the event listener when the component unmounts
     return () => {
       document.removeEventListener("click", handleDocumentClick);
     };

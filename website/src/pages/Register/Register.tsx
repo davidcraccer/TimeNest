@@ -72,7 +72,6 @@ const Register = () => {
       setUsernameInavailable(false);
       setRegistrationSuccess(true);
 
-      // Redirect to login page after a delay
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -189,10 +188,13 @@ const Register = () => {
                   <option value="Aushilfskraft">
                     Aushilfskraft
                   </option>
+                  <option value="Personalabteilung">
+                    Personalabteilung
+                  </option>
                   <option value="Niederlassungsleiter">
                     Niederlassungsleiter
                   </option>
-                  <option value="Geschäftsführung">Geschäftsführung</option>
+                  <option value="Vorgesetzte">Vorgesetzte</option>
                 </select>
               </div>
               <Form.Check

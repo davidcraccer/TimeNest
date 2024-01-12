@@ -44,7 +44,7 @@ export const notifications = [
     receiver: ["Vorgesetzte", "Niederlassungsleiter", "Personalabteilung"],
     thema: "Urlaubsanfrage",
     message:
-      "hat einen Urlaubsantrag gestellt. Bitte überprüfen Sie und nehmen Sie entsprechende Maßnahmen.",
+      "hat einen Urlaubsantrag gestellt.",
   },
   {
     sender: "Mitarbeiter",

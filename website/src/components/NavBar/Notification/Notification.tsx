@@ -10,6 +10,7 @@ interface NotificationProps {
     receiver: string[];
     thema: string;
     message: string;
+    details: string;
   }[];
 }
 
@@ -20,12 +21,12 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState<{
     sender: string;
-    message: string;
+    details: string;
   } | null>(null);
 
   const handleMoreInfoClick = (notification: {
     sender: string;
-    message: string;
+    details: string;
   }) => {
     setSelectedNotification(notification);
     setShowModal(true);
@@ -76,7 +77,7 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
             <>
               <p>
                 <strong>{selectedNotification.sender}:</strong>{" "}
-                {selectedNotification.message}
+                {selectedNotification.details}
               </p>
             </>
           )}

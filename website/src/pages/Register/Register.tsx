@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
@@ -16,13 +16,30 @@ const Register = () => {
     university: "",
   });
 
-  const [usernameError, setUsernameError] = useState<string | null>(null);
-  const [usernameInavailable, setUsernameInavailable] =
+  const [isUsernameLengthError, setIsUsernameLengthError] =
     useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [usernameLengthError, setUsernameLengthError] = useState<string | null>(
+    null
+  );
+
+  const [isUsernameAvailable, setIsUsernameAvailable] =
+    useState<boolean>(true);
+  const [usernameAvailableError, setUsernameAvailableError] = useState<
+    string | null
+  >(null);
+
+  const [isPasswordMatchError, setIsPasswordMatchError] =
+    useState<boolean>(false);
+  const [passwordMatchError, setPasswordMatchError] = useState<string | null>(
+    null
+  );
+
+  const [isPasswordLengthError, setIsPasswordLengthError] =
+    useState<boolean>(false);
   const [passwordLengthError, setPasswordLengthError] = useState<string | null>(
     null
   );
+
   const [registrationSuccess, setRegistrationSuccess] =
     useState<boolean>(false);
   const [showDataProtectionModal, setShowDataProtectionModal] =
@@ -42,31 +59,26 @@ const Register = () => {
 
     if (id === "password") {
       if (value.length < 7) {
+        setIsPasswordLengthError(true);
         setPasswordLengthError(
           "Das Passwort muss mindestens 7 Zeichen lang sein"
         );
       } else {
+        setIsPasswordLengthError(false);
         setPasswordLengthError(null);
       }
     }
-
+    
     if (id === "username") {
       if (value.length < 7) {
-        setUsernameError(
+        setIsUsernameLengthError(true);
+        setUsernameLengthError(
           "Der Benutzername muss mindestens 7 Zeichen lang sein"
         );
       } else {
-        setUsernameError(null);
+        setIsUsernameLengthError(false);
+        setUsernameLengthError(null);
       }
-
-      if (value.length > 0) {
-        // Reset the username availability error if the user is typing
-        setUsernameInavailable(false);
-      }
-    }
-
-    if (id === "password" || id === "confirmPassword") {
-      setPasswordError(null);
     }
   };
 
@@ -78,19 +90,21 @@ const Register = () => {
       return;
     }
 
-    // Check username length before submitting
     if (formData.username.length < 7) {
-      setUsernameError("Der Benutzername muss mindestens 7 Zeichen lang sein");
+      setIsUsernameLengthError(true);
+      setUsernameLengthError(
+        "Der Benutzername muss mindestens 7 Zeichen lang sein"
+      );
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setPasswordError("Die Passwörter stimmen nicht überein");
+      setPasswordMatchError("Die Passwörter stimmen nicht überein");
       return;
     }
 
-    setUsernameError(null);
-    setPasswordError(null);
+    setUsernameLengthError(null);
+    setPasswordMatchError(null);
 
     const { username, fullName, password, role, university } = formData;
 
@@ -103,14 +117,15 @@ const Register = () => {
         university,
       });
 
-      setUsernameInavailable(false);
+      setIsUsernameAvailable(true);
       setRegistrationSuccess(true);
 
       setTimeout(() => {
         navigate("/login");
       }, 2000);
     } catch (error: any) {
-      setUsernameInavailable(true);
+      setIsUsernameAvailable(false);
+      setUsernameAvailableError("Benutzer bereits gegeben");
       console.error("Error registering user:", error.response?.data?.error);
     }
   };
@@ -118,6 +133,16 @@ const Register = () => {
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDataProtectionConsent(e.target.checked);
   };
+
+  useEffect(() => {
+    if (formData.password !== formData.confirmPassword) {
+      setIsPasswordMatchError(true);
+      setPasswordMatchError("Die Passwörter stimmen nicht überein");
+    } else {
+      setIsPasswordMatchError(false);
+      setPasswordMatchError(null);
+    }
+  }, [formData.confirmPassword]);
 
   return (
     <>
@@ -142,19 +167,19 @@ const Register = () => {
                 <input
                   type="text"
                   className={`form-control ${
-                    usernameInavailable ? "is-invalid" : ""
+                    !isUsernameAvailable || usernameLengthError ? "is-invalid" : ""
                   }`}
                   id="username"
                   onChange={handleChange}
                   required
                 />
-                {usernameInavailable && (
+                {!isUsernameAvailable && (
                   <div className="invalid-feedback">
-                    Benutzername bereits vergeben.
+                    {usernameAvailableError}
                   </div>
                 )}
-                {usernameError && (
-                  <div className="invalid-feedback">{usernameError}</div>
+                {isUsernameLengthError && (
+                  <div className="invalid-feedback">{usernameLengthError}</div>
                 )}
               </div>
               <div className="mb-3">
@@ -176,13 +201,13 @@ const Register = () => {
                 <input
                   type="password"
                   className={`form-control ${
-                    passwordLengthError ? "is-invalid" : ""
+                    isPasswordLengthError || isPasswordMatchError ? "is-invalid" : ""
                   }`}
                   id="password"
                   onChange={handleChange}
                   required
                 />
-                {passwordLengthError && (
+                {isPasswordLengthError && (
                   <div className="invalid-feedback">{passwordLengthError}</div>
                 )}
               </div>
@@ -193,14 +218,14 @@ const Register = () => {
                 <input
                   type="password"
                   className={`form-control ${
-                    passwordError ? "is-invalid" : ""
+                    isPasswordMatchError ? "is-invalid" : ""
                   }`}
                   id="confirmPassword"
                   onChange={handleChange}
                   required
                 />
-                {passwordError && (
-                  <div className="invalid-feedback">{passwordError}</div>
+                {isPasswordMatchError && (
+                  <div className="invalid-feedback">{passwordMatchError}</div>
                 )}
               </div>
               <div className="mb-3">

@@ -29,12 +29,17 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
             <strong>{notification.sender}:</strong> {notification.message}
           </p>
           {(notification.thema === "Überstundenanfrage" ||
-            notification.thema === "Urlaubsanfrage") && (
-            <div className="d-flex mt-2 gap-2">
-              <Button className="btn-sm" variant="success">Akzeptieren</Button>
-              <Button className="btn-sm" variant="danger">Ablehnen</Button>
-            </div>
-          )}
+            notification.thema === "Urlaubsanfrage") &&
+            ["Vorgesetzte", "Niederlassungsleiter"].includes(role!) && (
+              <div className="d-flex mt-2 gap-2">
+                <Button variant="success" size="sm">
+                  Akzeptieren
+                </Button>
+                <Button variant="danger" size="sm">
+                  Ablehnen
+                </Button>
+              </div>
+            )}
         </div>
       ))}
     </div>

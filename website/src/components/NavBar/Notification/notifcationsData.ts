@@ -40,4 +40,11 @@ export const notifications = [
     receiver: ["Vorgesetzte", "Niederlassungsleiter", "Personalabteilung"],
     message: "hat seine Arbeitszeit erfasst. Überprüfen Sie die Informationen für Abrechnungszwecke.",
   },
+  {
+    sender: "Mitarbeiter",
+    receiver: ["Vorgesetzte", "Niederlassungsleiter", "Personalabteilung"],
+    thema: "ÜberstundenAnfrage",
+    message: "hat Überstunden angehäuft und beantragt deren Genehmigung.",
+  }
+  
 ];

@@ -26,3 +26,11 @@
     padding: 1em 0;
     border-top: 1px solid #ccc; /* Add a bottom border to separate notifications */
   }
+
+  .more-info-text{
+    color: #0000EE;
+    font-style: italic;
+  }
+  .more-info-text:hover{
+    cursor: pointer;
+  }

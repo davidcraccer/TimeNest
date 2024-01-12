@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Notification.css";
 import { useAuth } from "../../../utils/authContext";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 interface NotificationProps {
   notifications: {
@@ -16,6 +17,24 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
   const { user } = useAuth();
   const role = user?.role;
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState<{
+    sender: string;
+    message: string;
+  } | null>(null);
+
+  const handleMoreInfoClick = (notification: {
+    sender: string;
+    message: string;
+  }) => {
+    setSelectedNotification(notification);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   const filteredNotifications = notifications.filter((notification) =>
     notification.receiver.includes(role!)
   );
@@ -27,6 +46,11 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
         <div className="notification-item" key={index}>
           <p>
             <strong>{notification.sender}:</strong> {notification.message}
+          </p>
+          <p className="more-info-text btn-link"
+              onClick={() => handleMoreInfoClick(notification)}
+            >
+              Mehr Informationen
           </p>
           {(notification.thema === "Überstundenanfrage" ||
             notification.thema === "Urlaubsanfrage") &&
@@ -42,6 +66,27 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
             )}
         </div>
       ))}
+
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Mehr Informationen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedNotification && (
+            <>
+              <p>
+                <strong>{selectedNotification.sender}:</strong>{" "}
+                {selectedNotification.message}
+              </p>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Schließen
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

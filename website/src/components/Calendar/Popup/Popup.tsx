@@ -23,14 +23,14 @@ const Popup: React.FC<PopupProps> = ({
   existingOvertime,
   onClose,
 }) => {
-  const [workTimeTotalHours, setWorkTimeTotalHours] = useState<number | null>(null);
+  const [workTimeHours, setWorkTimeHours] = useState<number | null>(null);
   const [workTime, setWorkTime] = useState<{ startTime: string; endTime: string }[]>(
     existingWorkTime.length > 0
       ? existingWorkTime
       : [{ startTime: "", endTime: "" }]
   );
 
-  const [overtimeTotalHours, setOvertimeTotalHours] = useState<number | null>(null);
+  const [overtimeHours, setOvertimeHours] = useState<number | null>(null);
   const [overtime, setOvertime] = useState<{ startTime: string; endTime: string }[]>(
     existingOvertime.length > 0
       ? existingOvertime
@@ -73,49 +73,40 @@ const Popup: React.FC<PopupProps> = ({
   };
 
   const handleSave = () => {
-    const isWorkTimeValid = workTime.some(
-      (time) => time.startTime && time.endTime
-    );
+    // Calculate and subtract previous total hours before saving new ones
+    const previousWorkTimeTotalHours = calculateTotalHours(existingWorkTime);
+    const previousOvertimeTotalHours = calculateTotalHours(existingOvertime);
   
-    const isOvertimeValid = overtime.some(
-      (time) => time.startTime && time.endTime
-    );
+    // Calculate new total hours
+    const newWorkTimeTotalHours = calculateTotalHours(workTime);
+    const newOvertimeTotalHours = calculateTotalHours(overtime);
   
-    if (!isWorkTimeValid && !isOvertimeValid) {
-      onClose();
-      return;
-    }
+    // Subtract previous total hours
+    onSaveWorkTimeTotalHours((workTimeHours || 0) - previousWorkTimeTotalHours);
+    onSaveOvertimeTotalHours((overtimeHours || 0) - previousOvertimeTotalHours);
   
-    if (isWorkTimeValid) {
-      onSaveWorkTime(workTime);
-      onSaveWorkTimeTotalHours(workTimeTotalHours || 0);
-    }
+    // Save new values
+    onSaveWorkTime(workTime);
+    onSaveOvertime(overtime);
   
-    if (isOvertimeValid) {
-      onSaveOvertime(overtime);
-      onSaveOvertimeTotalHours(overtimeTotalHours || 0);
-    }
+    // Add new total hours
+    onSaveWorkTimeTotalHours(newWorkTimeTotalHours);
+    onSaveOvertimeTotalHours(newOvertimeTotalHours);
   
     onClose();
   };
   
-
-  useEffect(() => {
-    const calculateTotalHours = (times: { startTime: string; endTime: string }[]) => {
-      return times.reduce((acc, time) => {
-        if (time.startTime && time.endTime) {
-          const start = new Date(`1970-01-01T${time.startTime}`);
-          const end = new Date(`1970-01-01T${time.endTime}`);
-          const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-          return acc + hours;
-        }
-        return acc;
-      }, 0);
-    };
-
-    setWorkTimeTotalHours(calculateTotalHours(workTime));
-    setOvertimeTotalHours(calculateTotalHours(overtime));
-  }, [workTime, overtime]);
+  const calculateTotalHours = (times: { startTime: string; endTime: string }[]) => {
+    return times.reduce((acc, time) => {
+      if (time.startTime && time.endTime) {
+        const start = new Date(`1970-01-01T${time.startTime}`);
+        const end = new Date(`1970-01-01T${time.endTime}`);
+        const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+        return acc + hours;
+      }
+      return acc;
+    }, 0);
+  };
 
   return (
     <Modal show={true} onHide={onClose} centered>
@@ -175,8 +166,8 @@ const Popup: React.FC<PopupProps> = ({
           ))}
         </div>
 
-        {workTimeTotalHours ? (
-          <p>Arbeitszeit: {workTimeTotalHours.toFixed(2)}h</p>
+        {workTimeHours ? (
+          <p>Arbeitszeit: {workTimeHours.toFixed(2)}h</p>
         ) : null}
 
         <label className="mt-2">Überstunden: </label>
@@ -233,8 +224,8 @@ const Popup: React.FC<PopupProps> = ({
             </div>
           ))}
         </div>
-        {overtimeTotalHours ? (
-          <p>Überstunden: {overtimeTotalHours.toFixed(2)}h</p>
+        {overtimeHours ? (
+          <p>Überstunden: {overtimeHours.toFixed(2)}h</p>
         ) : null}
       </Modal.Body>
       <Modal.Footer>

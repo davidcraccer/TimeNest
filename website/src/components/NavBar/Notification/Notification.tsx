@@ -46,7 +46,8 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
     setShowModal(true);
   };
 
-  const handleAccept = (thema: string, index: number) => {
+  const handleAccept = (thema: string, index: number, event: React.MouseEvent) => {
+    event.stopPropagation();
     const updatedStatusList = [...notificationStatusList];
     updatedStatusList[index] = { index, message: `${thema} wurde akzeptiert` };
     setNotificationStatusList(updatedStatusList);
@@ -57,7 +58,8 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
     setVisibilityList(updatedVisibilityList);
   };
 
-  const handleDecline = (thema: string, index: number) => {
+  const handleDecline = (thema: string, index: number, event: React.MouseEvent) => {
+    event.stopPropagation();
     const updatedStatusList = [...notificationStatusList];
     updatedStatusList[index] = { index, message: `${thema} wurde abgelehnt` };
     setNotificationStatusList(updatedStatusList);
@@ -100,14 +102,14 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
                     <Button
                       variant="success"
                       size="sm"
-                      onClick={() => handleAccept(notification.thema, index)}
+                      onClick={(event) => handleAccept(notification.thema, index, event)}
                     >
                       Akzeptieren
                     </Button>
                     <Button
                       variant="danger"
                       size="sm"
-                      onClick={() => handleDecline(notification.thema, index)}
+                      onClick={(event) => handleDecline(notification.thema, index, event)}
                     >
                       Ablehnen
                     </Button>

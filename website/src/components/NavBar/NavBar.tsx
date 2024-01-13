@@ -30,23 +30,24 @@ const NavBar: React.FC = () => {
   const navbarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleDocumentClick = (event: MouseEvent) => {
+    const handleNotificationComponentClick = (event: MouseEvent) => {
+      // Close the notification if clicked outside of it
       if (
-        navbarRef.current &&
-        !navbarRef.current.contains(event.target as Node) &&
+        showNotification &&
+        !navbarRef.current?.contains(event.target as Node) &&
         !event.defaultPrevented
       ) {
         setShowNotification(false);
-        setShowProfile(false);
       }
     };
-
-    document.addEventListener("click", handleDocumentClick);
-
+  
+    document.addEventListener("click", handleNotificationComponentClick);
+  
     return () => {
-      document.removeEventListener("click", handleDocumentClick);
+      document.removeEventListener("click", handleNotificationComponentClick);
     };
-  }, []);
+  }, [showNotification]);
+  
 
   return (
     <nav className="navbar-expand-lg" ref={navbarRef}>

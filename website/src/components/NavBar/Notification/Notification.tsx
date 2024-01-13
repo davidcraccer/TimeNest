@@ -14,6 +14,11 @@ interface NotificationProps {
   }[];
 }
 
+interface NotificationStatus {
+  index: number | null;
+  message: string | null;
+}
+
 const Notification: React.FC<NotificationProps> = ({ notifications }) => {
   const { user } = useAuth();
   const role = user?.role;
@@ -24,15 +29,10 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
     details: string;
   } | null>(null);
 
-  const [notificationStatus, setNotificationStatus] = useState<string | null>(
-    null
-  );
-  const [declinedNotificationIndex, setDeclinedNotificationIndex] = useState<
-    number | null
-  >(null);
-  const [acceptedNotificationIndex, setAcceptedNotificationIndex] = useState<
-    number | null
-  >(null);
+  const [notificationStatus, setNotificationStatus] = useState<NotificationStatus>({
+    index: null,
+    message: null,
+  });
 
   const handleMoreInfoClick = (notification: {
     sender: string;
@@ -44,13 +44,17 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
   };
 
   const handleAccept = (thema: string, index: number) => {
-    setAcceptedNotificationIndex(index);
-    setNotificationStatus(`${thema} wurde akzeptiert`);
+    setNotificationStatus({
+      index,
+      message: `${thema} wurde akzeptiert`,
+    });
   };
 
   const handleDecline = (thema: string, index: number) => {
-    setDeclinedNotificationIndex(index);
-    setNotificationStatus(`${thema} wurde abgelehnt`);
+    setNotificationStatus({
+      index,
+      message: `${thema} wurde abgelehnt`,
+    });
   };
 
   const handleCloseModal = () => {
@@ -97,11 +101,10 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
             )}
 
           {/* Display status message within the specific notification */}
-          {notificationStatus !== null &&
-            declinedNotificationIndex === index && <p>{notificationStatus}</p>}
-
-          {notificationStatus !== null &&
-            acceptedNotificationIndex === index && <p>{notificationStatus}</p>}
+          {notificationStatus.index !== null &&
+            notificationStatus.index === index && (
+              <p>{notificationStatus.message}</p>
+            )}
         </div>
       ))}
 

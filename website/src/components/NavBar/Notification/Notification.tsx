@@ -29,9 +29,13 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
     details: string;
   } | null>(null);
 
-  const [notificationStatusList, setNotificationStatusList] = useState<
-    NotificationStatus[]
-  >(Array(notifications.length).fill({ index: null, message: null }));
+  const [notificationStatusList, setNotificationStatusList] = useState<NotificationStatus[]>(
+    Array(notifications.length).fill({ index: null, message: null })
+  );
+
+  const [visibilityList, setVisibilityList] = useState<boolean[]>(
+    Array(notifications.length).fill(true)
+  );
 
   const handleMoreInfoClick = (notification: {
     sender: string;
@@ -46,12 +50,22 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
     const updatedStatusList = [...notificationStatusList];
     updatedStatusList[index] = { index, message: `${thema} wurde akzeptiert` };
     setNotificationStatusList(updatedStatusList);
+
+    // Hide the notification content when the button is clicked
+    const updatedVisibilityList = [...visibilityList];
+    updatedVisibilityList[index] = false;
+    setVisibilityList(updatedVisibilityList);
   };
 
   const handleDecline = (thema: string, index: number) => {
     const updatedStatusList = [...notificationStatusList];
     updatedStatusList[index] = { index, message: `${thema} wurde abgelehnt` };
     setNotificationStatusList(updatedStatusList);
+
+    // Hide the notification content when the button is clicked
+    const updatedVisibilityList = [...visibilityList];
+    updatedVisibilityList[index] = false;
+    setVisibilityList(updatedVisibilityList);
   };
 
   const handleCloseModal = () => {
@@ -67,37 +81,40 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
       <h6>Benachrichtigungen</h6>
       {filteredNotifications.map((notification, index) => (
         <div className="notification-item" key={index}>
-          <div>
-            <p>
-              <strong>{notification.sender}:</strong> {notification.message}
-            </p>
-            <p
-              className="more-info-text btn-link"
-              onClick={() => handleMoreInfoClick(notification)}
-            >
-              Mehr Informationen
-            </p>
-            {(notification.thema === "Überstundenanfrage" ||
-              notification.thema === "Urlaubsanfrage") &&
-              ["Vorgesetzte", "Niederlassungsleiter"].includes(role!) && (
-                <div className="d-flex mt-2 gap-2">
-                  <Button
-                    variant="success"
-                    size="sm"
-                    onClick={() => handleAccept(notification.thema, index)}
-                  >
-                    Akzeptieren
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDecline(notification.thema, index)}
-                  >
-                    Ablehnen
-                  </Button>
-                </div>
-              )}
-          </div>
+          {/* Check visibility status before rendering the content */}
+          {visibilityList[index] && (
+            <div>
+              <p>
+                <strong>{notification.sender}:</strong> {notification.message}
+              </p>
+              <p
+                className="more-info-text btn-link"
+                onClick={() => handleMoreInfoClick(notification)}
+              >
+                Mehr Informationen
+              </p>
+              {(notification.thema === "Überstundenanfrage" ||
+                notification.thema === "Urlaubsanfrage") &&
+                ["Vorgesetzte", "Niederlassungsleiter"].includes(role!) && (
+                  <div className="d-flex mt-2 gap-2">
+                    <Button
+                      variant="success"
+                      size="sm"
+                      onClick={() => handleAccept(notification.thema, index)}
+                    >
+                      Akzeptieren
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDecline(notification.thema, index)}
+                    >
+                      Ablehnen
+                    </Button>
+                  </div>
+                )}
+            </div>
+          )}
 
           {/* Display status message within the specific notification */}
           {notificationStatusList[index].index !== null &&

@@ -23,14 +23,14 @@ const Popup: React.FC<PopupProps> = ({
   existingOvertime,
   onClose,
 }) => {
-  const [workTimeHours, setWorkTimeHours] = useState<number | null>(null);
+  const [displayWorkTime, setDisplayWorkTime] = useState<boolean>(false);
   const [workTime, setWorkTime] = useState<{ startTime: string; endTime: string }[]>(
     existingWorkTime.length > 0
       ? existingWorkTime
       : [{ startTime: "", endTime: "" }]
   );
 
-  const [overtimeHours, setOvertimeHours] = useState<number | null>(null);
+  const [displayOvertime, setDisplayOvertime] = useState<boolean>(false);
   const [overtime, setOvertime] = useState<{ startTime: string; endTime: string }[]>(
     existingOvertime.length > 0
       ? existingOvertime
@@ -60,42 +60,62 @@ const Popup: React.FC<PopupProps> = ({
     if (isWorkTime) {
       setWorkTime((prevWorkTime) => {
         const newWorkTime = [...prevWorkTime];
-        newWorkTime[index][field] = value;
+        newWorkTime[index] = {
+          ...newWorkTime[index],
+          [field]: value,
+        };
         return newWorkTime;
       });
     } else {
       setOvertime((prevOvertime) => {
         const newOvertime = [...prevOvertime];
-        newOvertime[index][field] = value;
+        newOvertime[index] = {
+          ...newOvertime[index],
+          [field]: value,
+        };
         return newOvertime;
       });
     }
-  };
+  };  
+
+  const addTotalHours = () => {
+    const newWorkTimeTotalHours = calculateTotalHours(workTime);
+    const newOvertimeTotalHours = calculateTotalHours(overtime);
+    onSaveWorkTimeTotalHours(newWorkTimeTotalHours);
+    onSaveOvertimeTotalHours(newOvertimeTotalHours);
+  }
+
+  const substractTotalHours = () => {
+    const previousWorkTimeTotalHours = calculateTotalHours(existingWorkTime);
+    const previousOvertimeTotalHours = calculateTotalHours(existingOvertime);
+    onSaveWorkTimeTotalHours(-previousWorkTimeTotalHours); 
+    onSaveOvertimeTotalHours(-previousOvertimeTotalHours);
+  }
 
   const handleSave = () => {
     // Calculate and subtract previous total hours before saving new ones
-    const previousWorkTimeTotalHours = calculateTotalHours(existingWorkTime);
-    const previousOvertimeTotalHours = calculateTotalHours(existingOvertime);
-  
-    // Calculate new total hours
-    const newWorkTimeTotalHours = calculateTotalHours(workTime);
-    const newOvertimeTotalHours = calculateTotalHours(overtime);
-  
-    // Subtract previous total hours
-    onSaveWorkTimeTotalHours((workTimeHours || 0) - previousWorkTimeTotalHours);
-    onSaveOvertimeTotalHours((overtimeHours || 0) - previousOvertimeTotalHours);
+    substractTotalHours()
   
     // Save new values
     onSaveWorkTime(workTime);
     onSaveOvertime(overtime);
-  
-    // Add new total hours
-    onSaveWorkTimeTotalHours(newWorkTimeTotalHours);
-    onSaveOvertimeTotalHours(newOvertimeTotalHours);
-  
+    
+    addTotalHours()
     onClose();
   };
   
+  useEffect(() => {
+    // Check if workTime has at least one valid entry
+    const hasValidWorkTime = workTime.some(
+      (time) => time.startTime && time.endTime
+    );
+    const hasValidOvertime = overtime.some(
+      (time) => time.startTime && time.endTime
+    );
+    setDisplayWorkTime(hasValidWorkTime);
+    setDisplayOvertime(hasValidOvertime);
+  }, [workTime, overtime]);
+
   const calculateTotalHours = (times: { startTime: string; endTime: string }[]) => {
     return times.reduce((acc, time) => {
       if (time.startTime && time.endTime) {
@@ -166,8 +186,8 @@ const Popup: React.FC<PopupProps> = ({
           ))}
         </div>
 
-        {workTimeHours ? (
-          <p>Arbeitszeit: {workTimeHours.toFixed(2)}h</p>
+        {displayWorkTime ? (
+          <p>Arbeitszeit: {calculateTotalHours(workTime).toFixed(2)}h</p>
         ) : null}
 
         <label className="mt-2">Überstunden: </label>
@@ -224,8 +244,8 @@ const Popup: React.FC<PopupProps> = ({
             </div>
           ))}
         </div>
-        {overtimeHours ? (
-          <p>Überstunden: {overtimeHours.toFixed(2)}h</p>
+        {displayOvertime ? (
+          <p>Überstunden: {calculateTotalHours(overtime).toFixed(2)}h</p>
         ) : null}
       </Modal.Body>
       <Modal.Footer>

@@ -29,10 +29,9 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
     details: string;
   } | null>(null);
 
-  const [notificationStatus, setNotificationStatus] = useState<NotificationStatus>({
-    index: null,
-    message: null,
-  });
+  const [notificationStatusList, setNotificationStatusList] = useState<
+    NotificationStatus[]
+  >(Array(notifications.length).fill({ index: null, message: null }));
 
   const handleMoreInfoClick = (notification: {
     sender: string;
@@ -44,17 +43,15 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
   };
 
   const handleAccept = (thema: string, index: number) => {
-    setNotificationStatus({
-      index,
-      message: `${thema} wurde akzeptiert`,
-    });
+    const updatedStatusList = [...notificationStatusList];
+    updatedStatusList[index] = { index, message: `${thema} wurde akzeptiert` };
+    setNotificationStatusList(updatedStatusList);
   };
 
   const handleDecline = (thema: string, index: number) => {
-    setNotificationStatus({
-      index,
-      message: `${thema} wurde abgelehnt`,
-    });
+    const updatedStatusList = [...notificationStatusList];
+    updatedStatusList[index] = { index, message: `${thema} wurde abgelehnt` };
+    setNotificationStatusList(updatedStatusList);
   };
 
   const handleCloseModal = () => {
@@ -70,40 +67,42 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
       <h6>Benachrichtigungen</h6>
       {filteredNotifications.map((notification, index) => (
         <div className="notification-item" key={index}>
-          <p>
-            <strong>{notification.sender}:</strong> {notification.message}
-          </p>
-          <p
-            className="more-info-text btn-link"
-            onClick={() => handleMoreInfoClick(notification)}
-          >
-            Mehr Informationen
-          </p>
-          {(notification.thema === "Überstundenanfrage" ||
-            notification.thema === "Urlaubsanfrage") &&
-            ["Vorgesetzte", "Niederlassungsleiter"].includes(role!) && (
-              <div className="d-flex mt-2 gap-2">
-                <Button
-                  variant="success"
-                  size="sm"
-                  onClick={() => handleAccept(notification.thema, index)}
-                >
-                  Akzeptieren
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleDecline(notification.thema, index)}
-                >
-                  Ablehnen
-                </Button>
-              </div>
-            )}
+          <div>
+            <p>
+              <strong>{notification.sender}:</strong> {notification.message}
+            </p>
+            <p
+              className="more-info-text btn-link"
+              onClick={() => handleMoreInfoClick(notification)}
+            >
+              Mehr Informationen
+            </p>
+            {(notification.thema === "Überstundenanfrage" ||
+              notification.thema === "Urlaubsanfrage") &&
+              ["Vorgesetzte", "Niederlassungsleiter"].includes(role!) && (
+                <div className="d-flex mt-2 gap-2">
+                  <Button
+                    variant="success"
+                    size="sm"
+                    onClick={() => handleAccept(notification.thema, index)}
+                  >
+                    Akzeptieren
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleDecline(notification.thema, index)}
+                  >
+                    Ablehnen
+                  </Button>
+                </div>
+              )}
+          </div>
 
           {/* Display status message within the specific notification */}
-          {notificationStatus.index !== null &&
-            notificationStatus.index === index && (
-              <p>{notificationStatus.message}</p>
+          {notificationStatusList[index].index !== null &&
+            notificationStatusList[index].index === index && (
+              <p>{notificationStatusList[index].message}</p>
             )}
         </div>
       ))}

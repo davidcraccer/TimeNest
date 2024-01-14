@@ -93,16 +93,28 @@ const Popup: React.FC<PopupProps> = ({
   }
 
   const handleSave = () => {
-    // Calculate and subtract previous total hours before saving new ones
-    substractTotalHours()
+    // Check if there is at least one valid entry in either workTime or overtime
+    const hasValidWorkTime = workTime.some(
+      (time) => time.startTime && time.endTime
+    );
+    const hasValidOvertime = overtime.some(
+      (time) => time.startTime && time.endTime
+    );
   
-    // Save new values
-    onSaveWorkTime(workTime);
-    onSaveOvertime(overtime);
+    if (hasValidWorkTime || hasValidOvertime) {
+      // Calculate and subtract previous total hours before saving new ones
+      substractTotalHours();
     
-    addTotalHours()
-    onClose();
+      // Save new values
+      onSaveWorkTime(workTime);
+      onSaveOvertime(overtime);
+      
+      addTotalHours();
+    }
+  
+    onClose(); // Close the modal regardless of whether there are valid inputs or not
   };
+  
   
   useEffect(() => {
     // Check if workTime has at least one valid entry

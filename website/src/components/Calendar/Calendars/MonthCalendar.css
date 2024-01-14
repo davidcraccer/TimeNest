@@ -25,7 +25,7 @@
   top: 5px;
 }
 
-.work-dot, .vacation-dot, .sick-dot  {
+.work-dot, .vacation-dot, .sick-dot, .overtime-dot  {
   position: absolute;
   right: 1px;
   width: 8px;
@@ -35,7 +35,12 @@
 }
 
 .work-dot {
-  background-color: #6EC0D8;
+  background-color: #7cdbf8;
+  top: 30px;
+}
+
+.overtime-dot {
+  background-color: #0291bd;
   top: 30px;
 }
 

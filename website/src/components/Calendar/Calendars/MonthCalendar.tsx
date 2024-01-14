@@ -30,7 +30,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
   const [workTimesMap, setWorkTimesMap] = useState<{
     [key: string]: { startTime: string; endTime: string }[];
   }>({});
-  const [overtimeMap, setOvertimeMap] = useState<{
+  const [overtimesMap, setOvertimesMap] = useState<{
     [key: string]: { startTime: string; endTime: string }[];
   }>({});
 
@@ -44,25 +44,41 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
     setShowPopup(false);
   };
 
-  const handleSaveWorkTime = (workTime: { startTime: string; endTime: string }[]) => {
+  const handleSaveWorkTime = (
+    workTime: { startTime: string; endTime: string }[]
+  ) => {
     const dateKey = selectedDate?.toISOString().split("T")[0];
 
     if (dateKey) {
-      setWorkTimesMap((prevWorkTimesMap) => ({
-        ...prevWorkTimesMap,
-        [dateKey]: workTime,
-      }));
+      const hasEmptyFields = workTime.some(
+        (time) => time.startTime === "" || time.endTime === ""
+      );
+
+      if (!hasEmptyFields) {
+        setWorkTimesMap((prevWorkTimesMap) => ({
+          ...prevWorkTimesMap,
+          [dateKey]: workTime,
+        }));
+      }
     }
   };
 
-  const handleSaveOvertime = (overtime: { startTime: string; endTime: string }[]) => {
+  const handleSaveOvertime = (
+    overtime: { startTime: string; endTime: string }[]
+  ) => {
     const dateKey = selectedDate?.toISOString().split("T")[0];
 
     if (dateKey) {
-      setOvertimeMap((prevOvertimeMap) => ({
-        ...prevOvertimeMap,
-        [dateKey]: overtime,
-      }));
+      const hasEmptyFields = overtime.some(
+        (time) => time.startTime === "" || time.endTime === ""
+      );
+
+      if (!hasEmptyFields) {
+        setOvertimesMap((prevOvertimesMap) => ({
+          ...prevOvertimesMap,
+          [dateKey]: overtime,
+        }));
+      }
     }
   };
 
@@ -95,10 +111,19 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
                       renderDot(
                         hasDataForDate(
                           new Date(currentYear, currentMonth, day),
-                          { ...workTimesMap, ...overtimeMap }
+                          workTimesMap
                         ),
                         "work-dot"
                       )}
+                    {day !== 0 &&
+                      renderDot(
+                        hasDataForDate(
+                          new Date(currentYear, currentMonth, day),
+                          overtimesMap
+                        ),
+                        "overtime-dot"
+                      )}
+
                     {day !== 0 &&
                       renderDot(
                         hasDateRangeForDate(
@@ -136,7 +161,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
           }
           existingOvertime={
             selectedDate
-              ? overtimeMap[selectedDate.toISOString().split("T")[0]] || []
+              ? overtimesMap[selectedDate.toISOString().split("T")[0]] || []
               : []
           }
           onClose={handleClosePopup}

@@ -8,6 +8,7 @@ import Profile from "./Profile/Profile";
 const NavBar: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
   const location = useLocation();
 
   const isLoginPage = location.pathname === "/login";
@@ -23,7 +24,9 @@ const NavBar: React.FC = () => {
     setShowNotification(false);
   };
 
-  const handleLogout = () => {
+  const handleBurgerMenuClick = () => {
+    setIsBurgerMenuOpen(!isBurgerMenuOpen);
+    setShowNotification(false);
     setShowProfile(false);
   };
 
@@ -40,43 +43,45 @@ const NavBar: React.FC = () => {
         setShowNotification(false);
       }
     };
-  
+
     document.addEventListener("click", handleNotificationComponentClick);
-  
+
     return () => {
       document.removeEventListener("click", handleNotificationComponentClick);
     };
   }, [showNotification]);
-  
 
   return (
-    <nav className="navbar-expand-lg" ref={navbarRef}>
+    <nav className={`navbar-expand-lg ${isBurgerMenuOpen ? "mobile-menu-open" : ""}`} ref={navbarRef}>
       <div className="navbar-dark">
+        {!isBurgerMenuOpen?
         <Link to="/">
           <img
             className="navbar-brand navbar-logo"
             src={require("../../images/logo.jpg")}
             alt="Time Nest Logo"
           ></img>
-        </Link>
+        </Link> : <></>
+        }
         {!isLoginPage && !isRegisterPage && (
           <button
-            className="navbar-toggler custom-toggler"
+            className={`navbar-toggler custom-toggler ${isBurgerMenuOpen ? "open" : ""}`}
             type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+            onClick={handleBurgerMenuClick}
           >
-            <span className="navbar-toggler-icon my-toggler"></span>
+            {!isBurgerMenuOpen? 
+              <span className="navbar-toggler-icon my-toggler"></span> :
+              <div className="x-button-container">
+                <span className="x-button">x</span>
+              </div>
+            }
           </button>
         )}
         {!isLoginPage && !isRegisterPage && (
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div className={`navbar-collapse collapse ${isBurgerMenuOpen ? "show" : ""}`}>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <Link to="/" className="nav-link">
+                <Link to="/" className="nav-link" onClick={handleBurgerMenuClick}>
                   Kalender
                 </Link>
               </li>
@@ -84,18 +89,28 @@ const NavBar: React.FC = () => {
                 <Link
                   to="/"
                   className="nav-link"
-                  onClick={handleNotificationClick}
+                  onClick={() => {
+                    handleNotificationClick();
+                    handleBurgerMenuClick();
+                  }}
                 >
                   Benachrichtigung
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/chat" className="nav-link">
+                <Link to="/chat" className="nav-link" onClick={handleBurgerMenuClick}>
                   Chats
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/" className="nav-link" onClick={handleProfileClick}>
+                <Link
+                  to="/"
+                  className="nav-link"
+                  onClick={() => {
+                    handleProfileClick();
+                    handleBurgerMenuClick();
+                  }}
+                >
                   Profil
                 </Link>
               </li>
@@ -104,7 +119,7 @@ const NavBar: React.FC = () => {
         )}
       </div>
       {showNotification && <Notification notifications={notifications} />}
-      {showProfile && <Profile handleLogout={handleLogout} />}
+      {showProfile && <Profile handleLogout={handleBurgerMenuClick} />}
     </nav>
   );
 };

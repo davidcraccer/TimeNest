@@ -80,3 +80,54 @@ nav {
 
 
 
+/* NavBar.css */
+
+.navbar-dark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.navbar-logo {
+  max-width: 100px; /* Adjust as needed */
+}
+
+.custom-toggler {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.x-button {
+  display: block;
+  width: 25px;
+  height: 3px;
+  color:  rgba(110, 192, 216);
+  margin: 5px 0;
+  transition: 0.4s;
+  font-size: 2em;
+}
+.x-button-container {
+  position: absolute;
+  top: 6px; /* Adjust top position as needed */
+  right: 60px; /* Adjust right position as needed */
+  cursor: pointer;
+}
+
+
+
+.navbar-nav {
+  text-align: center;
+}
+
+.nav-link {
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Add other styling as needed */

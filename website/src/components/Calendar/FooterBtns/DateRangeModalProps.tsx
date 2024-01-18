@@ -4,7 +4,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 interface DateRangeModalProps {
   show: boolean;
   onHide: () => void;
-  onSave: (startDate: string, endDate: string) => void;
+  onSave: (startDate: string | null, endDate: string | null) => void;
   title: string;
 }
 
@@ -21,29 +21,36 @@ const DateRangeModal: React.FC<DateRangeModalProps> = ({ show, onHide, onSave, t
 
   const handleSave = () => {
     let hasError = false;
-
+  
+    if (startDate.trim() === "") {
+      onSave(null, null);
+      onHide();
+      return;
+    }
+  
     if (!isValidDate(startDate)) {
       setStartDateError("Invalid start date format (dd.mm.yyyy)");
       hasError = true;
     } else {
       setStartDateError("");
     }
-
+  
     if (!isValidDate(endDate)) {
       setEndDateError("Invalid end date format (dd.mm.yyyy)");
       hasError = true;
     } else {
       setEndDateError("");
     }
-
+  
     if (!hasError) {
       const jsStartDate = new Date(startDate.split('.').reverse().join('-'));
       const jsEndDate = new Date(endDate.split('.').reverse().join('-'));
       onSave(jsStartDate.toISOString().split("T")[0], jsEndDate.toISOString().split("T")[0]);
-
+  
       onHide();
     }
   };
+  
 
   return (
     <Modal show={show} onHide={onHide} centered>

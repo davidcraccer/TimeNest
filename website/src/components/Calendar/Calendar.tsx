@@ -238,18 +238,25 @@ const Calendar: React.FC = () => {
         <DateRangeModal
           show={showVacationModal}
           onHide={() => setShowVacationModal(false)}
-          onSave={(start, end) =>
-            setVacationDates([...vacationDates, `${start}/${end}`])
-          }
+          onSave={(start, end) => {
+            if (start == null || end == null) {
+              setVacationDates([])
+            }
+            setVacationDates([`${start}/${end}`])
+          }}
           title="Urlaubstage"
         />
 
         <DateRangeModal
           show={showSickDaysModal}
           onHide={() => setShowSickDaysModal(false)}
-          onSave={(start, end) =>
-            setSickDates([...sickDates, `${start}/${end}`])
-          }
+          onSave={(start, end) => {
+            if (start == null || end == null) {
+              setSickDates([]);
+            } else {
+              setSickDates([`${start}/${end}`]);
+            }
+          }}
           title="Krankheitstage"
         />
         <div>

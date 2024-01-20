@@ -125,7 +125,6 @@ const NavBar: React.FC = () => {
                   className="nav-link"
                   onClick={() => {
                     handleProfileClick();
-                    handleBurgerMenuClick();
                   }}
                 >
                   Profil

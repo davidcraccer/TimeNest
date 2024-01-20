@@ -142,8 +142,10 @@ export const hasDataForDate = (
   timesMap: { [key: string]: { startTime: string; endTime: string }[] }
 ): boolean => {
   const dateKey = date.toISOString().split("T")[0];
-  return !!timesMap[dateKey];
+  const dataForDate = timesMap[dateKey];
+  return Array.isArray(dataForDate) && dataForDate.length > 0;
 };
+
 
 export const renderDot = (condition: boolean, className: string): JSX.Element =>
   condition ? <div className={className}></div> : <div></div>;

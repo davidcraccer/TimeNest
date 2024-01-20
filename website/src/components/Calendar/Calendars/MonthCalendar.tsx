@@ -59,6 +59,11 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
           ...prevWorkTimesMap,
           [dateKey]: workTime,
         }));
+      } else {
+        setWorkTimesMap((prevWorkTimesMap) => ({
+          ...prevWorkTimesMap,
+          [dateKey]: [],
+        }));
       }
     }
   };
@@ -77,6 +82,11 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({
         setOvertimesMap((prevOvertimesMap) => ({
           ...prevOvertimesMap,
           [dateKey]: overtime,
+        }));
+      } else {
+        setOvertimesMap((prevOvertimesMap) => ({
+          ...prevOvertimesMap,
+          [dateKey]: [],
         }));
       }
     }

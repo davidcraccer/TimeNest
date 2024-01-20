@@ -105,14 +105,20 @@ const Popup: React.FC<PopupProps> = ({
       // Calculate and subtract previous total hours before saving new ones
       substractTotalHours();
     
-      // Save new values
       onSaveWorkTime(workTime);
       onSaveOvertime(overtime);
-      
+      console.log(workTime)
+      console.log(overtime)
       addTotalHours();
+    } else {
+      // if theres no input return empty array
+      onSaveWorkTime([]);
+      onSaveOvertime([]);
+      console.log(workTime)
+      console.log(overtime)
     }
   
-    onClose(); // Close the modal regardless of whether there are valid inputs or not
+    onClose(); 
   };
   
   

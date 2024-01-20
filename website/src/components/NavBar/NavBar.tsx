@@ -51,6 +51,24 @@ const NavBar: React.FC = () => {
     };
   }, [showNotification]);
 
+  const updateBurgerMenuState = () => {
+    // Update the burger menu state based on the window size
+    setIsBurgerMenuOpen(window.innerWidth <= 767); // Adjust the breakpoint as needed
+  };
+
+  useEffect(() => {
+    // Initial setup
+    updateBurgerMenuState();
+
+    // Event listener for window resize
+    window.addEventListener("resize", updateBurgerMenuState);
+
+    return () => {
+      // Cleanup: remove the event listener
+      window.removeEventListener("resize", updateBurgerMenuState);
+    };
+  }, []);
+  
   return (
     <nav className={`navbar-expand-lg ${isBurgerMenuOpen ? "mobile-menu-open" : ""}`} ref={navbarRef}>
       <div className="navbar-dark">
@@ -91,7 +109,6 @@ const NavBar: React.FC = () => {
                   className="nav-link"
                   onClick={() => {
                     handleNotificationClick();
-                    handleBurgerMenuClick();
                   }}
                 >
                   Benachrichtigung

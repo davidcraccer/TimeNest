@@ -111,14 +111,13 @@ nav {
   transition: 0.4s;
   font-size: 2em;
 }
+
 .x-button-container {
   position: absolute;
   top: 6px; /* Adjust top position as needed */
   right: 60px; /* Adjust right position as needed */
   cursor: pointer;
 }
-
-
 
 .navbar-nav {
   text-align: center;

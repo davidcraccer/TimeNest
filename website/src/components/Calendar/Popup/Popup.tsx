@@ -1,6 +1,7 @@
+import "./Popup.css";
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import "./Popup.css";
+import { setExcessiveWorkHours } from '../../../services/CommunicationService';
 
 interface PopupProps {
   selectedDate: Date | null;
@@ -36,6 +37,7 @@ const Popup: React.FC<PopupProps> = ({
       ? existingOvertime
       : [{ startTime: "", endTime: "" }]
   );
+
 
   const addTimeField = (isWorkTime: boolean) => {
     if (isWorkTime) {
@@ -83,6 +85,11 @@ const Popup: React.FC<PopupProps> = ({
     const newOvertimeTotalHours = calculateTotalHours(overtime);
     onSaveWorkTimeTotalHours(newWorkTimeTotalHours);
     onSaveOvertimeTotalHours(newOvertimeTotalHours);
+
+    const totalHours = newWorkTimeTotalHours + newOvertimeTotalHours;
+    const excessiveWorkHours = totalHours > 10;
+
+    setExcessiveWorkHours(excessiveWorkHours);
   }
 
   const substractTotalHours = () => {
@@ -104,23 +111,18 @@ const Popup: React.FC<PopupProps> = ({
     if (hasValidWorkTime || hasValidOvertime) {
       // Calculate and subtract previous total hours before saving new ones
       substractTotalHours();
-    
       onSaveWorkTime(workTime);
       onSaveOvertime(overtime);
-      console.log(workTime)
-      console.log(overtime)
       addTotalHours();
+
     } else {
       // if theres no input return empty array
       onSaveWorkTime([]);
       onSaveOvertime([]);
-      console.log(workTime)
-      console.log(overtime)
     }
   
     onClose(); 
   };
-  
   
   useEffect(() => {
     // Check if workTime has at least one valid entry
@@ -145,6 +147,7 @@ const Popup: React.FC<PopupProps> = ({
       return acc;
     }, 0);
   };
+
 
   return (
     <Modal show={true} onHide={onClose} centered>

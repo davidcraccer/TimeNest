@@ -3,6 +3,7 @@ import "./Notification.css";
 import { useAuth } from "../../../utils/authContext";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { getExcessiveWorkHours } from '../../../services/CommunicationService';
 
 interface NotificationProps {
   notifications: {
@@ -78,9 +79,17 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
     notification.receiver.includes(role!)
   );
 
+  const excessiveWorkHoursNotification = getExcessiveWorkHours() ? 
+    "Du hast heute mehr als 10 Stunden gearbeitet. Denk bitte an eine Pause!" : null;
+
   return (
     <div className="notification-container">
       <h6>Benachrichtigungen</h6>
+      {excessiveWorkHoursNotification && (
+        <div className="notification-item text-danger excessive-work-hours">
+           <strong><p>{excessiveWorkHoursNotification}</p> </strong>
+        </div>
+      )}
       {filteredNotifications.map((notification, index) => (
         <div className="notification-item" key={index}>
           {/* Check visibility status before rendering the content */}
